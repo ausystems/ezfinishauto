@@ -93,7 +93,11 @@
      virtual camera (focal point + zoom inside the footage) dollies
      through the story on the same scrubbed timeline.
   ------------------------------------------------------------ */
-  const ctx = dom.canvas.getContext("2d");
+  // opaque canvas: the page behind it is exactly #050609, so painting that
+  // color ourselves lets the compositor skip alpha-blending a full-viewport
+  // layer every frame — the rendered pixels are identical
+  const BG = "#050609";
+  const ctx = dom.canvas.getContext("2d", { alpha: false });
   let cw = 0, ch = 0, dpr = 1, portrait = false;
 
   const state = {
@@ -118,6 +122,7 @@
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = "high";
+    ctx.fillStyle = BG; // resizing the canvas resets context state
     // matches the CSS orientation query exactly, so the card layout
     // and the camera band always agree on which script to run
     portrait = ch >= cw;
@@ -174,7 +179,8 @@
 
   function draw() {
     if (!cw || !ch) return;
-    ctx.clearRect(0, 0, cw, ch);
+    ctx.globalAlpha = 1;
+    ctx.fillRect(0, 0, cw, ch);
     const pair = nearestPair(gsap.utils.clamp(0, FRAME_COUNT - 1, state.vf));
     if (!pair) return;
     coverDraw(frames[pair.a], state.introA);
@@ -199,8 +205,10 @@
     document.fonts.load('480 17px "Bricolage Grotesque"'),
   ]).then(() => document.fonts.ready).catch(() => {});
 
-  const firstFrame = loadFrame(0).then(requestDraw);
-  pumpLoads();
+  // reduced motion shows one still — the finished car — so it loads only
+  // that frame instead of streaming all 96
+  const firstFrame = loadFrame(reduced ? FRAME_COUNT - 1 : 0).then(requestDraw);
+  if (!reduced) pumpLoads();
 
   const failsafe = new Promise((r) => setTimeout(r, 1600));
 
@@ -328,25 +336,39 @@
      real. Renders only while the section is on screen.
   ------------------------------------------------------------ */
   let causticsOn = false;
+  let attachCausticsTrigger = null; // set once three.js is live, so an
+                                    // orientation flip can rebuild the trigger
 
-  // three.js is 600KB the first paint never needs: fetch it only
-  // when the pricing section is approaching the viewport
+  // three.js is 600KB the first paint never needs. Parsing it is a long
+  // main-thread task, so it runs in the first idle moment after load —
+  // never in the middle of an active scrub. An IntersectionObserver on the
+  // pricing section stays as the fallback for someone who scrolls hard
+  // before the page ever goes idle.
   function lazyCaustics() {
     if (reduced || !$("#caustics")) return;
     let started = false;
+    let io = null;
     const start = () => {
       if (started) return;
       started = true;
+      if (io) { io.disconnect(); io = null; }
       const s = document.createElement("script");
       s.src = "assets/vendor/three.min.js";
       s.onload = buildCaustics;
       document.body.appendChild(s);
     };
-    if (!("IntersectionObserver" in window)) { start(); return; }
-    const io = new IntersectionObserver((entries) => {
-      if (entries.some((e) => e.isIntersecting)) { io.disconnect(); start(); }
-    }, { rootMargin: "900px 0px" });
-    io.observe($(".services"));
+    const whenIdle = () => {
+      if (window.requestIdleCallback) requestIdleCallback(start, { timeout: 8000 });
+      else setTimeout(start, 2500);
+    };
+    if (document.readyState === "complete") whenIdle();
+    else window.addEventListener("load", whenIdle, { once: true });
+    if ("IntersectionObserver" in window) {
+      io = new IntersectionObserver((entries) => {
+        if (entries.some((e) => e.isIntersecting)) start();
+      }, { rootMargin: "900px 0px" });
+      io.observe($(".services"));
+    }
   }
 
   function buildCaustics() {
@@ -410,12 +432,15 @@
       uniforms.uTime.value = time;
       renderer.render(scene, camera3);
     });
-    ScrollTrigger.create({
-      trigger: svc,
-      start: "top bottom",
-      end: "bottom top",
-      onToggle: (self) => { causticsOn = self.isActive; },
-    });
+    attachCausticsTrigger = () => {
+      ScrollTrigger.create({
+        trigger: svc,
+        start: "top bottom",
+        end: "bottom top",
+        onToggle: (self) => { causticsOn = self.isActive; },
+      });
+    };
+    attachCausticsTrigger();
   }
 
   /* ---------------- glass card physics ---------------- */
@@ -516,6 +541,12 @@
     });
 
     fade(".footer-id > *, .footer-socials a", ".footer", 0.1);
+    buildFooterScrub();
+  }
+
+  // the wordmark parallax is continuous, so unlike the once-only reveals it
+  // must be rebuilt whenever the scroll triggers are torn down
+  function buildFooterScrub() {
     gsap.fromTo(".footer-mark", { yPercent: 34, autoAlpha: 0.4 }, {
       yPercent: 0, autoAlpha: 1, ease: "none",
       scrollTrigger: { trigger: ".footer", start: "top bottom", end: "bottom bottom", scrub: 0.6 },
@@ -562,8 +593,13 @@
     }));
     window.addEventListener("pointermove", (e) => {
       mags.forEach((m) => {
+        // gsap writes opacity inline, so this reads the same value the old
+        // getComputedStyle call did — without forcing a style recalc; the
+        // rect is only measured for buttons that are actually visible
+        const inlineOpacity = m.el.style.opacity;
+        if (inlineOpacity !== "" && +inlineOpacity < 0.4) { m.x(0); m.y(0); return; }
         const r = m.el.getBoundingClientRect();
-        if (!r.width || +getComputedStyle(m.el).opacity < 0.4) { m.x(0); m.y(0); return; }
+        if (!r.width) { m.x(0); m.y(0); return; }
         const dx = e.clientX - (r.left + r.width / 2);
         const dy = e.clientY - (r.top + r.height / 2);
         const dist = Math.hypot(dx, dy);
@@ -654,6 +690,8 @@
         });
         buildScrub();
         initNavFlip();
+        buildFooterScrub();
+        if (attachCausticsTrigger) attachCausticsTrigger();
       }
       draw();
       ScrollTrigger.refresh();

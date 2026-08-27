@@ -25,8 +25,15 @@
   <meta name="twitter:image:alt" content="A freshly detailed white SUV beside the EZ Finish Auto wordmark" />
 
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/bricolage-var.woff2" crossorigin />
-  <link rel="preload" as="image" href="assets/seq/w-001.webp" type="image/webp" />
-  <link rel="preload" as="image" href="assets/footer-bg.webp" type="image/webp" fetchpriority="low" />
+  <!-- the first frame each device actually draws: small set ≤700px, full set above;
+       reduced motion shows the finished car, so it preloads the last frame instead -->
+  <link rel="preload" as="image" href="assets/seq/w-001.webp" type="image/webp" fetchpriority="high" media="(min-width: 701px) and (prefers-reduced-motion: no-preference)" />
+  <link rel="preload" as="image" href="assets/seq-sm/w-001.webp" type="image/webp" fetchpriority="high" media="(max-width: 700px) and (prefers-reduced-motion: no-preference)" />
+  <link rel="preload" as="image" href="assets/seq/w-096.webp" type="image/webp" fetchpriority="high" media="(min-width: 701px) and (prefers-reduced-motion: reduce)" />
+  <link rel="preload" as="image" href="assets/seq-sm/w-096.webp" type="image/webp" fetchpriority="high" media="(max-width: 700px) and (prefers-reduced-motion: reduce)" />
+  <link rel="preload" as="image" href="assets/footer-bg-2400.webp" type="image/webp" fetchpriority="low" media="(max-width: 760px)" />
+  <link rel="preload" as="image" href="assets/footer-bg-3840.webp" type="image/webp" fetchpriority="low" media="(min-width: 761px) and (max-width: 1600px)" />
+  <link rel="preload" as="image" href="assets/footer-bg.webp" type="image/webp" fetchpriority="low" media="(min-width: 1601px)" />
   <link rel="dns-prefetch" href="https://maps.google.com" />
   <link rel="dns-prefetch" href="https://www.google.com" />
 
