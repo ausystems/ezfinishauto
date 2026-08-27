@@ -290,14 +290,39 @@ ul { list-style: none; }
 .t-mask { display: block; overflow: hidden; padding-bottom: 0.06em; }
 .t-line { display: inline-block; will-change: transform; }
 
-/* ---------- packages: dark glass over living water light ---------- */
+/* ---------- packages: dark glass over living water light ----------
+   A truck interior sits behind the whole section, tinted down so the
+   glass cards refract a real photograph while every line of type keeps
+   its contrast. Same master image at three sizes, so no device pulls
+   more pixels than its screen can show.
+------------------------------------------------------------ */
 
 .services {
   position: relative;
   overflow: hidden;
-  background: #070a12;
+  background-color: #070a12;
+  background-image:
+    linear-gradient(180deg, rgba(6, 9, 16, 0.9) 0%, rgba(6, 9, 16, 0.82) 42%, rgba(6, 9, 16, 0.93) 100%),
+    url("../assets/pricing-bg-2400.webp");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   color: var(--light);
   padding: clamp(80px, 13vh, 150px) var(--pad-x) clamp(90px, 13vh, 150px);
+}
+@media (min-width: 761px) {
+  .services {
+    background-image:
+      linear-gradient(180deg, rgba(6, 9, 16, 0.9) 0%, rgba(6, 9, 16, 0.82) 42%, rgba(6, 9, 16, 0.93) 100%),
+      url("../assets/pricing-bg-3840.webp");
+  }
+}
+@media (min-width: 1601px) {
+  .services {
+    background-image:
+      linear-gradient(180deg, rgba(6, 9, 16, 0.9) 0%, rgba(6, 9, 16, 0.82) 42%, rgba(6, 9, 16, 0.93) 100%),
+      url("../assets/pricing-bg.webp");
+  }
 }
 #caustics {
   position: absolute;
