@@ -1042,50 +1042,126 @@ a.method:hover .m-a svg { transform: translateX(4px); }
 
 /* ---------- booking request form ---------- */
 
-.quote {
-  margin-top: clamp(60px, 10vh, 120px);
+/* ---------- contact: split hero ----------
+   The detailed truck interior holds the left of the screen edge to
+   edge and rides along while the booking panel scrolls — photo one
+   side, composition the other, in the site's own sharp geometry.
+   Same master photo at three sizes so no device over-downloads.
+------------------------------------------------------------ */
+
+.cpage { padding: 0 0 clamp(70px, 10vh, 130px); }
+.cpage .contact-methods,
+.cpage .page-strip { padding-inline: var(--pad-x); }
+
+.chero {
   display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-  gap: clamp(34px, 5vw, 90px);
-  align-items: start;
-  padding-top: clamp(40px, 6vh, 64px);
-  border-top: 1px solid var(--hairline-d);
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  background: var(--bg-dark);
 }
-.quote-title {
-  font-weight: 800;
-  font-stretch: 80%;
-  font-size: clamp(38px, 4.6vw, 84px);
-  line-height: 0.87;
-  letter-spacing: -0.018em;
-  text-transform: uppercase;
-  color: var(--light);
+.chero-media {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  background-color: #0a0d14;
+  background-image:
+    linear-gradient(to right, rgba(5, 6, 9, 0) 52%, rgba(5, 6, 9, 0.62) 84%, #050609 100%),
+    linear-gradient(180deg, rgba(5, 6, 9, 0.5) 0%, rgba(5, 6, 9, 0.12) 26%, rgba(5, 6, 9, 0.1) 72%, rgba(5, 6, 9, 0.55) 100%),
+    url("../assets/contact-bg-1400.webp");
+  background-size: cover;
+  background-position: 42% center;
+  background-repeat: no-repeat;
 }
-.quote-title em { font-style: normal; color: var(--blue); }
-.quote-sub {
-  margin-top: 20px;
-  max-width: 44ch;
-  font-size: clamp(15px, 1.1vw, 17px);
-  line-height: 1.7;
-  color: var(--light-dim);
+@media (min-width: 761px) {
+  .chero-media {
+    background-image:
+      linear-gradient(to right, rgba(5, 6, 9, 0) 52%, rgba(5, 6, 9, 0.62) 84%, #050609 100%),
+      linear-gradient(180deg, rgba(5, 6, 9, 0.5) 0%, rgba(5, 6, 9, 0.12) 26%, rgba(5, 6, 9, 0.1) 72%, rgba(5, 6, 9, 0.55) 100%),
+      url("../assets/contact-bg-2600.webp");
+  }
 }
-.quote-points { margin-top: 26px; }
-.quote-points li {
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-  padding: 12px 0;
-  border-top: 1px solid var(--hairline-d);
-  font-size: clamp(13px, 1vw, 15px);
-  color: var(--light-dim);
+@media (min-width: 1601px) {
+  .chero-media {
+    background-image:
+      linear-gradient(to right, rgba(5, 6, 9, 0) 52%, rgba(5, 6, 9, 0.62) 84%, #050609 100%),
+      linear-gradient(180deg, rgba(5, 6, 9, 0.5) 0%, rgba(5, 6, 9, 0.12) 26%, rgba(5, 6, 9, 0.1) 72%, rgba(5, 6, 9, 0.55) 100%),
+      url("../assets/contact-bg.webp");
+  }
 }
-.quote-points li::before {
+/* the blue rule travels here too: a thin identity seam on the split */
+.chero-media::after {
   content: "";
-  flex: none;
-  width: 14px;
-  height: 3px;
+  position: absolute;
+  top: clamp(96px, 14vh, 150px);
+  right: 0;
+  width: 3px;
+  height: clamp(72px, 12vh, 132px);
   background: var(--blue);
-  transform: translateY(-3px);
 }
+.chero-panel {
+  min-width: 0;
+  padding: calc(84px + clamp(28px, 5vh, 56px)) var(--pad-x) clamp(48px, 7vh, 80px) clamp(30px, 4.2vw, 84px);
+}
+.chero-panel .page-lead { margin-top: clamp(18px, 2.6vh, 26px); }
+.chero-panel .qform,
+.chero-panel .qdone { margin-top: clamp(30px, 4.5vh, 46px); }
+
+.chero-links {
+  margin-top: clamp(28px, 4.5vh, 44px);
+  padding-top: 8px;
+  border-top: 1px solid var(--hairline-d);
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: clamp(24px, 3vw, 40px);
+}
+.chero-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: var(--light-dim);
+  transition: color 0.3s var(--ease-out);
+}
+.chero-links a:first-child {
+  color: var(--light);
+  box-shadow: inset 0 2px 0 var(--blue);
+}
+.chero-links a:hover { color: #7d99ff; }
+
+.q-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: stretch;
+}
+
+/* the display headline sits in a half-width panel here, so it scales
+   to the column, not the viewport */
+.chero-panel .page-title { font-size: clamp(44px, 5.6vw, 104px); }
+.chero-panel .page-lead { max-width: 56ch; font-size: clamp(15px, 1.08vw, 17.5px); }
+
+/* underline fields: label over a hairline rule, nothing boxed —
+   the input is the line */
+.cpage .field { gap: 4px; }
+.cpage .field :is(input, select, textarea) {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid rgba(242, 244, 248, 0.28);
+  padding: 8px 2px 14px;
+  transition: border-color 0.3s var(--ease-out);
+}
+.cpage .field select { padding-right: 42px; background-position: right 8px center; }
+.cpage .field textarea { min-height: 96px; }
+.cpage .field :is(input, select, textarea):hover { border-bottom-color: rgba(242, 244, 248, 0.5); }
+.cpage .field :is(input, select, textarea):focus-visible {
+  outline: none;
+  border-bottom: 2px solid var(--blue);
+  padding-bottom: 13px;
+  background: linear-gradient(to top, rgba(47, 84, 255, 0.07), transparent 60%);
+}
+.cpage .field:focus-within label { color: #7d99ff; }
+.cpage .field [aria-invalid="true"] { border-bottom-color: #ff8080; }
 
 .qform { display: grid; gap: clamp(18px, 2.4vh, 26px); }
 .q-row { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(14px, 1.6vw, 24px); }
@@ -1258,10 +1334,30 @@ a.method:hover .m-a svg { transform: translateX(4px); }
 /* ---------- subpage responsive ---------- */
 
 @media (max-width: 1080px) {
-  .quote { grid-template-columns: 1fr; gap: 38px; }
+  /* the split stacks: photo band on top, feathered into the page,
+     the panel below at full width */
+  .chero { grid-template-columns: 1fr; }
+  .chero-media {
+    position: relative;
+    top: auto;
+    height: clamp(300px, 46svh, 460px);
+    background-position: 42% 30%;
+    background-image:
+      linear-gradient(to bottom, rgba(5, 6, 9, 0.55) 0%, rgba(5, 6, 9, 0.08) 34%, rgba(5, 6, 9, 0.5) 78%, #050609 100%),
+      url("../assets/contact-bg-2600.webp");
+  }
+  .chero-media::after { top: auto; bottom: 0; right: var(--pad-x); width: 3px; height: clamp(56px, 9vh, 96px); }
+  .chero-panel { padding: clamp(30px, 5vh, 48px) var(--pad-x) clamp(44px, 6vh, 64px); }
+  .chero-panel .page-title { font-size: clamp(46px, 9.8vw, 104px); }
 }
 @media (max-width: 760px) {
   .page { padding-top: calc(70px + clamp(40px, 7vh, 70px)); }
+  .cpage { padding-top: 0; }
+  .chero-media {
+    background-image:
+      linear-gradient(to bottom, rgba(5, 6, 9, 0.55) 0%, rgba(5, 6, 9, 0.08) 34%, rgba(5, 6, 9, 0.5) 78%, #050609 100%),
+      url("../assets/contact-bg-1400.webp");
+  }
   .q-row { grid-template-columns: 1fr; }
   .method { min-height: 0; }
 }

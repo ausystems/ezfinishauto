@@ -25,6 +25,10 @@
   <meta name="twitter:image:alt" content="A freshly detailed white SUV beside the EZ Finish Auto wordmark" />
 
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/bricolage-var.woff2" crossorigin />
+  <!-- the split-hero photo, sized per breakpoint -->
+  <link rel="preload" as="image" href="assets/contact-bg-1400.webp" type="image/webp" fetchpriority="high" media="(max-width: 760px)" />
+  <link rel="preload" as="image" href="assets/contact-bg-2600.webp" type="image/webp" fetchpriority="high" media="(min-width: 761px) and (max-width: 1600px)" />
+  <link rel="preload" as="image" href="assets/contact-bg.webp" type="image/webp" fetchpriority="high" media="(min-width: 1601px)" />
   <link rel="preload" as="image" href="assets/footer-bg-2400.webp" type="image/webp" fetchpriority="low" media="(max-width: 760px)" />
   <link rel="preload" as="image" href="assets/footer-bg-3840.webp" type="image/webp" fetchpriority="low" media="(min-width: 761px) and (max-width: 1600px)" />
   <link rel="preload" as="image" href="assets/footer-bg.webp" type="image/webp" fetchpriority="low" media="(min-width: 1601px)" />
@@ -69,11 +73,86 @@
     <a class="nav-book" href="#quote"><span class="nb-full">BOOK MOBILE DETAILING</span><span class="nb-short">BOOK</span></a>
   </header>
 
-  <main class="page">
-    <section class="page-hero">
-      <p class="page-eyebrow rise-in">CONTACT &bull; BRAMPTON, ON</p>
-      <h1 class="page-title rise-in"><span>BOOK YOUR</span> <span>EZ <em>FINISH</em>.</span></h1>
-      <p class="page-lead rise-in">Have your vehicle detailed at home, at work, or wherever it is parked. Message us on Instagram, or prepare a booking request below and send it from the app you already use.</p>
+  <main class="page cpage">
+
+    <!-- SPLIT HERO: the truck interior holds the left, the booking panel the right -->
+    <section class="chero" id="quote">
+      <div class="chero-media" role="img" aria-label="The interior of a truck detailed by EZ Finish Auto, steering wheel and console spotless"></div>
+      <div class="chero-panel">
+        <p class="page-eyebrow rise-in">CONTACT &bull; BRAMPTON, ON</p>
+        <h1 class="page-title rise-in"><span>BOOK YOUR</span> <span>EZ <em>FINISH</em>.</span></h1>
+        <p class="page-lead rise-in">Have your vehicle detailed at home, at work, or wherever it is parked. Message us on Instagram, or prepare a booking request below and send it from the app you already use.</p>
+
+        <form class="qform" id="qform" novalidate>
+          <div class="q-hp" aria-hidden="true">
+            <label for="q-company">Company</label>
+            <input id="q-company" name="company" type="text" tabindex="-1" autocomplete="off" />
+          </div>
+          <div class="q-row">
+            <div class="field" id="fw-name">
+              <label for="q-name">FULL NAME *</label>
+              <input id="q-name" name="name" type="text" autocomplete="name" required aria-describedby="err-name" />
+              <p class="f-err" id="err-name">Please add your name so we know who to reply to.</p>
+            </div>
+            <div class="field" id="fw-vehicle">
+              <label for="q-vehicle">VEHICLE TYPE *</label>
+              <select id="q-vehicle" name="vehicle" required aria-describedby="err-vehicle">
+                <option value="" selected disabled>Select your vehicle</option>
+                <option>Sedan</option>
+                <option>SUV</option>
+                <option>Van / Truck</option>
+                <option>Other</option>
+              </select>
+              <p class="f-err" id="err-vehicle">Please choose a vehicle type.</p>
+            </div>
+          </div>
+          <div class="q-row">
+            <div class="field">
+              <label for="q-area">CITY / AREA</label>
+              <input id="q-area" name="area" type="text" autocomplete="address-level2" placeholder="Brampton, Mississauga, Vaughan…" />
+            </div>
+            <div class="field">
+              <label for="q-when">PREFERRED DAY</label>
+              <input id="q-when" name="when" type="text" placeholder="This weekend, next Tuesday…" />
+            </div>
+          </div>
+          <div class="field">
+            <label for="q-details">ANYTHING WE SHOULD KNOW?</label>
+            <textarea id="q-details" name="details" placeholder="Pet hair, two vehicles, underground parking…"></textarea>
+          </div>
+          <p class="q-note">Nothing is sent automatically and nothing is stored. This form only prepares your message — you review it and send it yourself.</p>
+          <div class="q-actions">
+            <button class="cta q-submit" type="submit">
+              <span class="cta-label">PREPARE MY MESSAGE</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l14 0"/><path d="M13 18l6 -6"/><path d="M13 6l6 6"/></svg>
+            </button>
+            <a class="ghost" href="https://ig.me/m/ezfinishauto" target="_blank" rel="noopener">OPEN INSTAGRAM</a>
+          </div>
+        </form>
+
+        <div class="qdone" id="qdone" hidden>
+          <p class="qdone-k" id="qdoneTitle" tabindex="-1">YOUR MESSAGE IS READY</p>
+          <p class="qdone-msg" id="qdoneMsg"></p>
+          <div class="qdone-actions">
+            <a class="cta" id="qIg" href="https://ig.me/m/ezfinishauto" target="_blank" rel="noopener">
+              <span class="cta-label">SEND ON INSTAGRAM</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l14 0"/><path d="M13 18l6 -6"/><path d="M13 6l6 6"/></svg>
+            </a>
+            <a class="cta" id="qSms" href="/contact" hidden>
+              <span class="cta-label">SEND AS TEXT</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l14 0"/><path d="M13 18l6 -6"/><path d="M13 6l6 6"/></svg>
+            </a>
+            <button class="ghost" id="qCopy" type="button">COPY MESSAGE</button>
+            <button class="ghost" id="qEdit" type="button">EDIT DETAILS</button>
+          </div>
+          <p class="qdone-note" id="qdoneNote" role="status" aria-live="polite"></p>
+        </div>
+
+        <div class="chero-links">
+          <a href="https://www.instagram.com/ezfinishauto" target="_blank" rel="noopener">@EZFINISHAUTO</a>
+          <a href="https://www.tiktok.com/@ez.finishauto" target="_blank" rel="noopener">@EZ.FINISHAUTO</a>
+        </div>
+      </div>
     </section>
 
     <section class="contact-methods" aria-label="Ways to reach EZ Finish Auto">
@@ -104,80 +183,6 @@
         <a class="m-a" href="/#book">SEE THE MAP
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l14 0"/><path d="M13 18l6 -6"/><path d="M13 6l6 6"/></svg>
         </a>
-      </div>
-    </section>
-
-    <section class="quote" id="quote">
-      <div class="quote-col">
-        <h2 class="quote-title">REQUEST A <em>BOOKING</em>.</h2>
-        <p class="quote-sub">Tell us about your vehicle. The form writes your booking message for you — review it, then send it from Instagram or your messages app. No account, no waiting on hold.</p>
-        <ul class="quote-points">
-          <li>Mobile detailing at your driveway, workplace, or parking spot</li>
-          <li>Sedans, SUVs, vans, and trucks</li>
-          <li>Serving Brampton and the Greater Toronto Area</li>
-        </ul>
-      </div>
-
-      <form class="qform" id="qform" novalidate>
-        <div class="q-hp" aria-hidden="true">
-          <label for="q-company">Company</label>
-          <input id="q-company" name="company" type="text" tabindex="-1" autocomplete="off" />
-        </div>
-        <div class="q-row">
-          <div class="field" id="fw-name">
-            <label for="q-name">YOUR NAME *</label>
-            <input id="q-name" name="name" type="text" autocomplete="name" required aria-describedby="err-name" />
-            <p class="f-err" id="err-name">Please add your name so we know who to reply to.</p>
-          </div>
-          <div class="field" id="fw-vehicle">
-            <label for="q-vehicle">VEHICLE TYPE *</label>
-            <select id="q-vehicle" name="vehicle" required aria-describedby="err-vehicle">
-              <option value="" selected disabled>Select your vehicle</option>
-              <option>Sedan</option>
-              <option>SUV</option>
-              <option>Van / Truck</option>
-              <option>Other</option>
-            </select>
-            <p class="f-err" id="err-vehicle">Please choose a vehicle type.</p>
-          </div>
-        </div>
-        <div class="q-row">
-          <div class="field">
-            <label for="q-area">CITY / AREA</label>
-            <input id="q-area" name="area" type="text" autocomplete="address-level2" placeholder="Brampton, Mississauga, Vaughan…" />
-          </div>
-          <div class="field">
-            <label for="q-when">PREFERRED DAY</label>
-            <input id="q-when" name="when" type="text" placeholder="This weekend, next Tuesday…" />
-          </div>
-        </div>
-        <div class="field">
-          <label for="q-details">ANYTHING WE SHOULD KNOW?</label>
-          <textarea id="q-details" name="details" placeholder="Pet hair, two vehicles, underground parking…"></textarea>
-        </div>
-        <p class="q-note">Nothing is sent automatically and nothing is stored. This form only prepares your message — you review it and send it yourself.</p>
-        <button class="cta q-submit" type="submit">
-          <span class="cta-label">PREPARE MY MESSAGE</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l14 0"/><path d="M13 18l6 -6"/><path d="M13 6l6 6"/></svg>
-        </button>
-      </form>
-
-      <div class="qdone" id="qdone" hidden>
-        <p class="qdone-k" id="qdoneTitle" tabindex="-1">YOUR MESSAGE IS READY</p>
-        <p class="qdone-msg" id="qdoneMsg"></p>
-        <div class="qdone-actions">
-          <a class="cta" id="qIg" href="https://ig.me/m/ezfinishauto" target="_blank" rel="noopener">
-            <span class="cta-label">SEND ON INSTAGRAM</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l14 0"/><path d="M13 18l6 -6"/><path d="M13 6l6 6"/></svg>
-          </a>
-          <a class="cta" id="qSms" href="/contact" hidden>
-            <span class="cta-label">SEND AS TEXT</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l14 0"/><path d="M13 18l6 -6"/><path d="M13 6l6 6"/></svg>
-          </a>
-          <button class="ghost" id="qCopy" type="button">COPY MESSAGE</button>
-          <button class="ghost" id="qEdit" type="button">EDIT DETAILS</button>
-        </div>
-        <p class="qdone-note" id="qdoneNote" role="status" aria-live="polite"></p>
       </div>
     </section>
 
