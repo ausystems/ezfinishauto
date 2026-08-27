@@ -104,7 +104,7 @@
     vf: 0,
     fx: 0.5, fy: 0.5, zoom: 1.03,
     bandY: 0.44,
-    introA: reduced ? 1 : 0,
+    introA: 1,
   };
   window.__state = state;
 
@@ -216,17 +216,15 @@
     sizeCanvas();
     draw();
     document.body.classList.add("ready");
-    if (!reduced) intro();
   });
 
   /* ---------------- initial states ----------------
-     Frame one's finished look is its CSS baseline, so rewinding the
-     scrub to the top always lands on a complete first card. Frames
-     two and three start hidden because their moment has not come.
+     No entrance animation: the first card, the nav, and the button are
+     simply there the moment the page shows. Frame one's finished look
+     is its CSS baseline; frames two and three start hidden because
+     their moment has not come.
   ------------------------------------------------------------ */
   if (!reduced) {
-    gsap.set(dom.nav, { autoAlpha: 0, y: -10 });
-    gsap.set(".sms", { autoAlpha: 0, y: 16 });
     [frameEls[1], frameEls[2]].forEach((f) => {
       gsap.set(f.el, { autoAlpha: 0 });
       gsap.set(f.lines, { yPercent: 112 });
@@ -237,21 +235,6 @@
 
   // without motion the still should be the finished car, not the dirty one
   if (reduced) state.vf = FRAME_COUNT - 1;
-
-  let introDone = reduced;
-  function intro() {
-    const f = frameEls[0];
-    const tl = gsap.timeline({ defaults: { ease: "power4.out" }, onComplete: () => { introDone = true; } });
-    tl.from(f.rule, { scaleX: 0, duration: 0.8, ease: "expo.out" }, 0.05)
-      .fromTo(state, { zoom: 1.1 }, {
-        zoom: portrait ? 1.02 : 1.035, introA: 1,
-        duration: 1.6, ease: "power3.out", onUpdate: requestDraw,
-      }, 0.08)
-      .from(f.lines, { yPercent: 112, duration: 1.15, stagger: 0.1 }, 0.3)
-      .from(f.bits, { autoAlpha: 0, y: 20, duration: 0.85, stagger: 0.1 }, 0.72)
-      .to(dom.nav, { autoAlpha: 1, y: 0, duration: 0.8 }, 0.8)
-      .to(".sms", { autoAlpha: 1, y: 0, duration: 0.7, ease: "back.out(1.6)" }, 1.15);
-  }
 
   /* ---------------- scrubbed master timeline ----------------
      10 units across a 600% pin. vf 0 -> 95 between u0.6 and
@@ -328,121 +311,6 @@
     });
 
     return tl;
-  }
-
-  /* ---------------- water light: three.js caustics ----------------
-     A procedural light-through-water field behind the pricing glass.
-     The cards backdrop-blur it, so the glass is refracting something
-     real. Renders only while the section is on screen.
-  ------------------------------------------------------------ */
-  let causticsOn = false;
-  let attachCausticsTrigger = null; // set once three.js is live, so an
-                                    // orientation flip can rebuild the trigger
-
-  // three.js is 600KB the first paint never needs. Parsing it is a long
-  // main-thread task, so it runs in the first idle moment after load —
-  // never in the middle of an active scrub. An IntersectionObserver on the
-  // pricing section stays as the fallback for someone who scrolls hard
-  // before the page ever goes idle.
-  function lazyCaustics() {
-    if (reduced || !$("#caustics")) return;
-    let started = false;
-    let io = null;
-    const start = () => {
-      if (started) return;
-      started = true;
-      if (io) { io.disconnect(); io = null; }
-      const s = document.createElement("script");
-      s.src = "assets/vendor/three.min.js";
-      s.onload = buildCaustics;
-      document.body.appendChild(s);
-    };
-    const whenIdle = () => {
-      if (window.requestIdleCallback) requestIdleCallback(start, { timeout: 8000 });
-      else setTimeout(start, 2500);
-    };
-    if (document.readyState === "complete") whenIdle();
-    else window.addEventListener("load", whenIdle, { once: true });
-    if ("IntersectionObserver" in window) {
-      io = new IntersectionObserver((entries) => {
-        if (entries.some((e) => e.isIntersecting)) start();
-      }, { rootMargin: "900px 0px" });
-      io.observe($(".services"));
-    }
-  }
-
-  function buildCaustics() {
-    const cnv = $("#caustics");
-    if (!cnv || reduced || !window.THREE) return;
-    let renderer;
-    try {
-      renderer = new THREE.WebGLRenderer({ canvas: cnv, alpha: true, antialias: false });
-    } catch (e) { cnv.style.display = "none"; return; }
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
-    const scene = new THREE.Scene();
-    const camera3 = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-    const uniforms = {
-      uTime: { value: 0 },
-      uRes: { value: new THREE.Vector2(1, 1) },
-    };
-    const mat = new THREE.ShaderMaterial({
-      uniforms,
-      transparent: true,
-      depthWrite: false,
-      vertexShader: "void main(){gl_Position=vec4(position,1.0);}",
-      fragmentShader: `
-        precision highp float;
-        uniform float uTime;
-        uniform vec2 uRes;
-        void main(){
-          vec2 uv = gl_FragCoord.xy / uRes;
-          vec2 p = uv * vec2(uRes.x / uRes.y, 1.0) * 5.0;
-          float t = uTime * 0.35;
-          vec2 i = p;
-          float c = 1.0;
-          for (int n = 0; n < 3; n++) {
-            float fn = float(n) + 1.0;
-            i = p + vec2(cos(t - i.x * 1.3) + sin(t + i.y * 1.1),
-                         sin(t - i.y * 1.4) + cos(t + i.x * 1.2));
-            c += 1.0 / length(vec2(p.x / (sin(i.x + t) / 0.24),
-                                   p.y / (cos(i.y + t) / 0.24)));
-          }
-          c /= 4.0;
-          c = 1.17 - pow(c, 1.4);
-          float glow = pow(abs(c), 8.0);
-          vec2 d = uv - vec2(0.5, 0.42);
-          float mask = 1.0 - smoothstep(0.34, 0.72, length(d * vec2(1.1, 1.5)));
-          vec3 col = vec3(0.86, 0.9, 0.96) * glow * 1.25 + vec3(0.32, 0.34, 0.4) * abs(c) * 0.3;
-          gl_FragColor = vec4(col, mask * min(glow * 1.6 + 0.12, 0.85));
-        }`,
-    });
-    scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), mat));
-
-    const svc = $(".services");
-    // the canvas fills the photo band it lives in, not the whole section
-    const host = cnv.parentElement;
-    function sizeCaustics() {
-      const w = host.clientWidth, h = host.clientHeight;
-      renderer.setSize(w, h, false);
-      uniforms.uRes.value.set(w * renderer.getPixelRatio(), h * renderer.getPixelRatio());
-    }
-    sizeCaustics();
-    window.addEventListener("resize", () => setTimeout(sizeCaustics, 150));
-
-    gsap.ticker.add((time) => {
-      if (!causticsOn) return;
-      uniforms.uTime.value = time;
-      renderer.render(scene, camera3);
-    });
-    attachCausticsTrigger = () => {
-      ScrollTrigger.create({
-        trigger: svc,
-        start: "top bottom",
-        end: "bottom top",
-        onToggle: (self) => { causticsOn = self.isActive; },
-      });
-    };
-    attachCausticsTrigger();
   }
 
   /* ---------------- glass card physics ---------------- */
@@ -651,8 +519,8 @@
   sizeCanvas();
   state.fx = portrait ? 0.66 : 0.5;
   state.bandY = bandStart();
+  state.zoom = portrait ? 1.02 : 1.035;
   buildMap();
-  lazyCaustics();
   buildCardTilt();
   if (!reduced) { buildScrub(); buildReveals(); initNavFlip(); ScrollTrigger.refresh(); }
   else { initNavFlip(); document.body.classList.add("ready"); }
@@ -693,7 +561,6 @@
         buildScrub();
         initNavFlip();
         buildFooterScrub();
-        if (attachCausticsTrigger) attachCausticsTrigger();
       }
       draw();
       ScrollTrigger.refresh();

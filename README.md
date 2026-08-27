@@ -2,7 +2,7 @@
 
 Mobile car detailing in Brampton, ON and the Greater Toronto Area. A cinematic one-page site — 96 frames of one car washed from mud to mirror finish, scrubbed on a pinned scroll timeline — plus a booking/contact page and a custom 404.
 
-**Stack**: hand-built static HTML/CSS/JS. GSAP + ScrollTrigger (vendored) drive the scroll experience; three.js (vendored, lazy-loaded) renders the caustics behind the pricing glass. No framework, no build step.
+**Stack**: hand-built static HTML/CSS/JS. GSAP + ScrollTrigger (vendored) drive the scroll experience. No framework, no build step.
 
 ## Pages
 
@@ -61,10 +61,11 @@ index.html  contact.html  404.html          pages
 css/style.css                               one design system for all pages
 js/config.js                                contact paths & phone number (single source)
 js/main.js                                  home: wash scrub, camera, map, reveals
+js/nav.js                                   hamburger menu (all pages)
 js/contact.js                               contact: form validation + message composer
 assets/seq[-sm]/                            96 wash frames (desktop / ≤700px)
 assets/fonts/sora-var.woff2 + dmsans-var    Sora (display) + DM Sans (body)
-assets/vendor/                              gsap, ScrollTrigger, three (lazy)
+assets/vendor/                              gsap, ScrollTrigger
 assets/veh/ · assets/og-image.jpg · assets/footer-bg.webp
 robots.txt  sitemap.xml  llms.txt           crawlers
 vercel.json  .vercelignore                  deployment

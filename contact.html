@@ -71,8 +71,29 @@
       <span class="brand-main">EZ FINISH AUTO</span>
       <span class="brand-tag">SERVING BRAMPTON AND THE GTA</span>
     </a>
-    <a class="nav-book" href="#quote"><span class="nb-full">BOOK MOBILE DETAILING</span><span class="nb-short">BOOK</span></a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="/#services">PACKAGES &amp; PRICING</a>
+      <a href="/contact" aria-current="page">CONTACT</a>
+    </nav>
+    <div class="nav-side">
+      <a class="nav-book" href="#quote"><span class="nb-full">BOOK MOBILE DETAILING</span><span class="nb-short">BOOK</span></a>
+      <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navMenu" aria-label="Open menu"><span></span><span></span></button>
+    </div>
   </header>
+
+  <div class="nav-menu" id="navMenu" hidden>
+    <nav class="nav-menu-links" aria-label="Menu">
+      <a href="/">HOME</a>
+      <a href="/#services">PACKAGES &amp; PRICING</a>
+      <a href="#quote">BOOK MOBILE DETAILING</a>
+      <a href="/contact" aria-current="page">CONTACT</a>
+    </nav>
+    <div class="nav-menu-foot">
+      <a href="https://www.instagram.com/ezfinishauto" target="_blank" rel="noopener">@EZFINISHAUTO</a>
+      <a href="https://www.tiktok.com/@ez.finishauto" target="_blank" rel="noopener">@EZ.FINISHAUTO</a>
+    </div>
+  </div>
+  <noscript><style>.nav-toggle { display: none; }</style></noscript>
 
   <main class="page cpage">
 
@@ -223,6 +244,7 @@
   </footer>
 
   <script src="js/config.js"></script>
+  <script src="js/nav.js"></script>
   <script src="js/contact.js"></script>
 </body>
 </html>
