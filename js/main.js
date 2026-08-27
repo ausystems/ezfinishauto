@@ -200,9 +200,9 @@
   window.scrollTo(0, 0);
 
   const fontsReady = Promise.all([
-    document.fonts.load('800 100px "Bricolage Grotesque"'),
-    document.fonts.load('600 12px "Bricolage Grotesque"'),
-    document.fonts.load('480 17px "Bricolage Grotesque"'),
+    document.fonts.load('800 100px "Sora"'),
+    document.fonts.load('600 12px "Sora"'),
+    document.fonts.load('460 17px "DM Sans"'),
   ]).then(() => document.fonts.ready).catch(() => {});
 
   // reduced motion shows one still — the finished car — so it loads only
@@ -412,15 +412,17 @@
           float glow = pow(abs(c), 8.0);
           vec2 d = uv - vec2(0.5, 0.42);
           float mask = 1.0 - smoothstep(0.34, 0.72, length(d * vec2(1.1, 1.5)));
-          vec3 col = vec3(0.18, 0.32, 1.0) * glow * 1.4 + vec3(0.05, 0.1, 0.4) * abs(c) * 0.35;
+          vec3 col = vec3(0.86, 0.9, 0.96) * glow * 1.25 + vec3(0.32, 0.34, 0.4) * abs(c) * 0.3;
           gl_FragColor = vec4(col, mask * min(glow * 1.6 + 0.12, 0.85));
         }`,
     });
     scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), mat));
 
     const svc = $(".services");
+    // the canvas fills the photo band it lives in, not the whole section
+    const host = cnv.parentElement;
     function sizeCaustics() {
-      const w = svc.clientWidth, h = svc.clientHeight;
+      const w = host.clientWidth, h = host.clientHeight;
       renderer.setSize(w, h, false);
       uniforms.uRes.value.set(w * renderer.getPixelRatio(), h * renderer.getPixelRatio());
     }

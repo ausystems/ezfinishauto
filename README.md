@@ -63,7 +63,7 @@ js/config.js                                contact paths & phone number (single
 js/main.js                                  home: wash scrub, camera, map, reveals
 js/contact.js                               contact: form validation + message composer
 assets/seq[-sm]/                            96 wash frames (desktop / ≤700px)
-assets/fonts/bricolage-var.woff2            the single variable font
+assets/fonts/sora-var.woff2 + dmsans-var    Sora (display) + DM Sans (body)
 assets/vendor/                              gsap, ScrollTrigger, three (lazy)
 assets/veh/ · assets/og-image.jpg · assets/footer-bg.webp
 robots.txt  sitemap.xml  llms.txt           crawlers

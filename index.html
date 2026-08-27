@@ -24,7 +24,8 @@
   <meta name="twitter:image" content="https://ezfinishauto.vercel.app/assets/og-image.jpg" />
   <meta name="twitter:image:alt" content="A freshly detailed white SUV beside the EZ Finish Auto wordmark" />
 
-  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/bricolage-var.woff2" crossorigin />
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/sora-var.woff2" crossorigin />
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/dmsans-var.woff2" crossorigin />
   <!-- the first frame each device actually draws: small set ≤700px, full set above;
        reduced motion shows the finished car, so it preloads the last frame instead -->
   <link rel="preload" as="image" href="assets/seq/w-001.webp" type="image/webp" fetchpriority="high" media="(min-width: 701px) and (prefers-reduced-motion: no-preference)" />
@@ -205,14 +206,12 @@
 
 
     <!-- PACKAGES -->
-    <section class="services" id="services">
-      <canvas id="caustics" aria-hidden="true"></canvas>
+    <section class="services zone-light" id="services">
       <div class="services-head">
         <h2 class="services-title">
           <span class="t-mask"><span class="t-line">CHOOSE YOUR VEHICLE.</span></span>
           <span class="t-mask"><span class="t-line">CHOOSE YOUR <em>FINISH</em>.</span></span>
         </h2>
-        <p class="services-sub">INTERIOR &bull; EXTERIOR &bull; WHEELS &bull; TIRES</p>
       </div>
       <div class="cards">
         <article class="card">
@@ -263,6 +262,12 @@
             </div>
           </div>
         </article>
+      </div>
+      <!-- the detailed interior rides in a wide photo band; the living
+           water light plays across it -->
+      <div class="svc-banner">
+        <canvas id="caustics" aria-hidden="true"></canvas>
+        <p class="services-sub">INTERIOR &bull; EXTERIOR &bull; WHEELS &bull; TIRES</p>
       </div>
     </section>
 

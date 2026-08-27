@@ -125,7 +125,7 @@ for (const view of [{ name: "desktop", w: 1440, h: 900 }, { name: "mobile", w: 3
         ogImage: document.querySelector('meta[property="og:image"]')?.content || "",
         twitter: document.querySelector('meta[name="twitter:card"]')?.content || "",
       };
-      const fontLoaded = document.fonts.check('800 40px "Bricolage Grotesque"');
+      const fontLoaded = document.fonts.check('800 40px "Sora"') && document.fonts.check('460 16px "DM Sans"');
       return {
         overflow: de.scrollWidth - de.clientWidth,
         h1Count: h1s.length, h1Text: h1s[0]?.textContent || "",

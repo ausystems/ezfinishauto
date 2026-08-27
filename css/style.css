@@ -10,10 +10,15 @@
    ============================================================ */
 
 @font-face {
-  font-family: "Bricolage Grotesque";
-  src: url("../assets/fonts/bricolage-var.woff2") format("woff2");
-  font-weight: 200 800;
-  font-stretch: 75% 100%;
+  font-family: "Sora";
+  src: url("../assets/fonts/sora-var.woff2") format("woff2");
+  font-weight: 100 800;
+  font-display: block;
+}
+@font-face {
+  font-family: "DM Sans";
+  src: url("../assets/fonts/dmsans-var.woff2") format("woff2");
+  font-weight: 100 1000;
   font-display: block;
 }
 
@@ -21,19 +26,25 @@
   --bg-dark: #050609;
   --light: #f2f4f8;
   --light-dim: #b9becb;
-  --blue: #2f54ff;
-  --blue-deep: #2140d6;
-  --blue-text: #2547e0;
-  --grey-1: #eef0f3;
-  --grey-2: #e3e6ec;
+  /* the accent system: chrome silver on dark, graphite on light —
+     no blue anywhere */
+  --blue: #c7cdd6;
+  --blue-deep: #dfe3e9;
+  --blue-text: #5d5e64;
+  --grey-1: #f5f5f7;
+  --grey-2: #f5f5f7;
   --grey-3: #d9dde5;
+  --paper: #ffffff;
+  --paper-2: #f5f5f7;
+  --line-l: #e7e7ec;
   --ink: #0b0e17;
   --ink-dim: #4b5163;
   --ink-soft: #737a8d;
   --card: #ffffff;
   --hairline-l: rgba(11, 14, 23, 0.14);
   --hairline-d: rgba(242, 244, 248, 0.16);
-  --sans: "Bricolage Grotesque", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --sans: "DM Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --display: "Sora", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --pad-x: clamp(20px, 5vw, 92px);
 }
@@ -1363,4 +1374,295 @@ a.method:hover .m-a svg { transform: translateX(4px); }
 }
 @media (max-width: 520px) {
   .qdone-actions .cta, .qdone-actions .ghost { width: 100%; justify-content: center; }
+}
+
+/* ============================================================
+   REDESIGN LAYER · Sora + DM Sans, white/grey/black system
+   The hero keeps its exact composition and motion: only the
+   typeface and the accent (blue → chrome silver) change there.
+   Everything between the hero and the footer turns light —
+   white ground, grey surfaces, black type and buttons — in the
+   editorial card language of the reference. Sizes for Sora are
+   rescaled from measured width ratios so every masked line
+   holds exactly the same wrapping as before.
+   ============================================================ */
+
+body { font-weight: 460; }
+
+/* ---------- type system ---------- */
+
+.f-title, .services-title, .book-title, .card-name, .price,
+.page-title, .nf-code, .nf-title, .mf-title, .m-v,
+.footer-name, .footer-mark, .brand-main, .book-city, .f-price,
+.qdone-k, .page-strip-line {
+  font-family: var(--display);
+  font-stretch: normal;
+}
+.sec-eyebrow, .services-sub, .brand-tag, .price-label, .footer-tag,
+.footer-nav a, .map-bar, .mf-link, .m-k, .m-a, .chero-links a,
+.page-eyebrow, .field label, .skip, .cta-label, .ghost, .nav-book,
+.page-strip-link, .footer-socials a span {
+  font-family: var(--display);
+}
+
+/* ---------- hero · type rescale + chrome accent only ---------- */
+
+.f-title { font-size: clamp(27px, 4.45vw, 86px); line-height: 0.95; letter-spacing: -0.025em; }
+.f-price {
+  color: #ccd1da;
+  font-weight: 700;
+  font-size: clamp(12.5px, 1.06vw, 17.5px);
+  letter-spacing: 0.08em;
+}
+.f-cta .cta-label { font-size: 13px; letter-spacing: 0.12em; }
+.f-lead { font-weight: 500; }
+
+/* the one accent everywhere on dark ground: chrome silver */
+.seq-progress span { background: #c7cdd6; }
+
+/* ---------- buttons ----------
+   Dark ground: white button, black label. Light ground: black
+   button, white label. The hero button keeps its sharp corners. */
+
+.cta { background: #f4f5f7; color: #0c0c0e; }
+.cta:hover { background: #d9dde3; color: #0c0c0e; }
+.cta-label { font-weight: 700; }
+
+.nav-book { background: #f4f5f7; color: #0c0c0e; border-radius: 10px; letter-spacing: 0.12em; }
+.nav-book:hover { background: #d9dde3; }
+.nav.on-light .nav-book { background: #0e0e11; color: #ffffff; }
+.nav.on-light .nav-book:hover { background: #26262b; }
+
+.brand-main { font-size: 17.5px; letter-spacing: 0.06em; font-weight: 800; }
+.brand-tag { font-size: 9.5px; letter-spacing: 0.2em; }
+
+.skip { background: #0e0e11; }
+::selection { background: #0b0e17; color: #ffffff; }
+:focus-visible { outline-color: #0b0e17; }
+.seq :focus-visible,
+.footer :focus-visible,
+.chero :focus-visible,
+.nav:not(.on-light) :focus-visible { outline-color: #f2f4f8; }
+
+/* ---------- packages · white editorial section ---------- */
+
+.services {
+  background-color: var(--paper);
+  background-image: none;
+  color: #0b0e17;
+}
+.services::after { content: none; }
+.services-head { margin-bottom: clamp(34px, 5vh, 60px); }
+.services-title {
+  color: #0b0e17;
+  font-size: clamp(36px, 6.3vw, 114px);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+}
+.services-title em { color: #8c8e95; }
+
+.card {
+  background: #f5f5f7;
+  border: 1px solid var(--line-l);
+  border-radius: 20px;
+  box-shadow: 0 16px 40px rgba(15, 15, 20, 0.06);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  color: #0b0e17;
+}
+.card:hover {
+  border-color: #d5d5dc;
+  box-shadow: 0 26px 60px rgba(15, 15, 20, 0.1);
+}
+.card-name {
+  color: #0b0e17;
+  font-size: clamp(23px, 2vw, 37px);
+  letter-spacing: -0.02em;
+  line-height: 1.04;
+}
+.card-list li { color: #5c5d63; border-top: 1px solid #e4e4e9; }
+.card:hover .card-list li { color: #0b0e17; }
+.price {
+  background: none;
+  color: #0b0e17;
+  font-size: clamp(38px, 3.4vw, 62px);
+  letter-spacing: -0.03em;
+}
+.price-label { color: #83848a; letter-spacing: 0.26em; }
+
+/* the interior photo band: imagery kept, water light plays over it,
+   the service line floats in a glass chip */
+.svc-banner {
+  position: relative;
+  margin-top: clamp(18px, 2.6vw, 30px);
+  height: clamp(220px, 34vh, 380px);
+  border-radius: 24px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background-color: #101116;
+  background-image:
+    linear-gradient(180deg, rgba(8, 9, 12, 0.42) 0%, rgba(8, 9, 12, 0.3) 50%, rgba(8, 9, 12, 0.56) 100%),
+    url("../assets/pricing-bg-2400.webp");
+  background-size: cover;
+  background-position: center 42%;
+  background-repeat: no-repeat;
+}
+@media (min-width: 761px) {
+  .svc-banner {
+    background-image:
+      linear-gradient(180deg, rgba(8, 9, 12, 0.42) 0%, rgba(8, 9, 12, 0.3) 50%, rgba(8, 9, 12, 0.56) 100%),
+      url("../assets/pricing-bg-3840.webp");
+  }
+}
+@media (min-width: 1601px) {
+  .svc-banner {
+    background-image:
+      linear-gradient(180deg, rgba(8, 9, 12, 0.42) 0%, rgba(8, 9, 12, 0.3) 50%, rgba(8, 9, 12, 0.56) 100%),
+      url("../assets/pricing-bg.webp");
+  }
+}
+#caustics { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.5; }
+.services-sub {
+  position: relative;
+  z-index: 2;
+  color: #f4f5f8;
+  font-weight: 600;
+  font-size: clamp(10px, 0.95vw, 12.5px);
+  letter-spacing: 0.3em;
+  text-indent: 0.3em;
+  padding: 14px 26px;
+  border-radius: 999px;
+  background: rgba(12, 13, 17, 0.34);
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  -webkit-backdrop-filter: blur(14px) saturate(1.15);
+  backdrop-filter: blur(14px) saturate(1.15);
+}
+
+/* ---------- booking · soft grey, black ink ---------- */
+
+.zone-light { background: var(--paper-2); color: #0b0e17; }
+.book { background: var(--paper-2); }
+.sec-eyebrow { color: #6e6f76; font-weight: 600; letter-spacing: 0.28em; }
+.book-title {
+  font-size: clamp(34px, 5.05vw, 92px);
+  line-height: 0.96;
+  letter-spacing: -0.03em;
+}
+.book-title em { color: #8c8e95; }
+.book-body p { color: #55565c; }
+.cta-ink,
+.nf .cta {
+  background: #0e0e11;
+  color: #ffffff;
+  border-radius: 12px;
+}
+.cta-ink:hover,
+.nf .cta:hover { background: #26262b; color: #ffffff; }
+.book-city {
+  color: #6e6f76;
+  font-weight: 700;
+  font-size: clamp(14px, 1.25vw, 19px);
+  letter-spacing: 0.12em;
+}
+
+.map-panel {
+  background: var(--paper);
+  border: 1px solid var(--line-l);
+  border-radius: 24px;
+  box-shadow: 0 18px 50px rgba(15, 15, 20, 0.07);
+}
+.map-slot { border-radius: 14px; background: #eceef1; }
+.map-slot::after { box-shadow: inset 0 0 40px rgba(10, 10, 14, 0.08); }
+.map-embed { filter: grayscale(1) contrast(1.03) brightness(1.01); }
+.map-fallback { background: #eceef1; }
+.mf-rule { background: #0e0e11; }
+.mf-title { color: #0b0e17; font-size: clamp(17px, 1.85vw, 30px); }
+.mf-link { color: #6e6f76; box-shadow: inset 0 -1px 0 #c9c9d0; }
+.mf-link:hover { color: #0b0e17; border-color: #0b0e17; }
+.map-bar { color: #6e6f76; border-top: 1px solid var(--line-l); }
+.map-bar svg { color: #9a9ba1; }
+
+/* ---------- footer · unchanged dark ground, retuned type ---------- */
+
+.footer-name { font-size: clamp(19px, 1.72vw, 26px); letter-spacing: 0.03em; }
+.footer-mark { font-size: clamp(50px, 9.8vw, 186px); letter-spacing: -0.02em; }
+.footer-socials a span { font-weight: 600; }
+
+/* ---------- contact split hero · chrome accents ---------- */
+
+.page-eyebrow { color: #c3c8d2; }
+.page-title { letter-spacing: -0.028em; }
+.page-title em { color: #c7cdd6; }
+.chero-panel .page-title { font-size: clamp(30px, 3.65vw, 68px); }
+.chero-media::after { background: #c7cdd6; }
+.chero-links a:first-child { box-shadow: inset 0 2px 0 #f2f4f8; }
+.chero-links a:hover { color: #ffffff; }
+.cpage .field :is(input, select, textarea):focus-visible {
+  border-bottom: 2px solid #f2f4f8;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.06), transparent 60%);
+}
+.cpage .field:focus-within label { color: #eef0f4; }
+.qdone-msg { border-left: 3px solid #c7cdd6; }
+.ghost:hover { border-color: #f2f4f8; color: #ffffff; }
+
+/* below the dark split, the page turns light */
+.cpage { background: var(--paper); }
+.cpage .method {
+  background: var(--paper-2);
+  border: 1px solid var(--line-l);
+  border-radius: 18px;
+}
+.cpage a.method:hover { border-color: #cfcfd6; }
+.cpage .m-k { color: #7c7d84; }
+.cpage .m-v { color: #0b0e17; }
+.cpage .m-a { color: #55565c; }
+.cpage a.method:hover .m-a { color: #0b0e17; }
+.cpage .page-strip { border-top: 1px solid var(--line-l); }
+.cpage .page-strip-line { color: #0b0e17; font-weight: 700; letter-spacing: 0.02em; }
+.cpage .page-strip-link { color: #0b0e17; box-shadow: inset 0 -1px 0 #c9c9d0; }
+.cpage .page-strip-link:hover { color: #55565c; box-shadow: inset 0 -1px 0 #55565c; }
+
+/* ---------- 404 · light ---------- */
+
+.nf { background: var(--paper); }
+.nf-code { color: #0b0e17; font-size: clamp(92px, 18vw, 320px); letter-spacing: -0.03em; }
+.nf-code em { color: #8c8e95; }
+.nf-title { color: #0b0e17; letter-spacing: -0.015em; }
+.nf-lead { color: #55565c; }
+.nf .ghost {
+  color: #0b0e17;
+  border: 1px solid #d3d3da;
+  border-radius: 12px;
+}
+.nf .ghost:hover { border-color: #0b0e17; color: #0b0e17; }
+.nf :focus-visible { outline-color: #0b0e17; }
+
+/* ---------- responsive type rescale (Sora widths) ---------- */
+
+@media (max-width: 760px) {
+  .brand-main { font-size: 14px; }
+  .f-title { font-size: clamp(21px, 6.35vw, 42px); }
+  .f-price { font-size: clamp(11.5px, 3.3vw, 15px); }
+  .f-cta .cta-label { font-size: 12px; letter-spacing: 0.1em; }
+  .book-title { font-size: clamp(26px, 6.1vw, 40px); }
+  .book-city { font-size: 14px; letter-spacing: 0.1em; }
+  .footer-mark { font-size: 9.55vw; }
+  .services-sub { letter-spacing: 0.22em; text-indent: 0.22em; padding: 12px 20px; }
+  .svc-banner { border-radius: 18px; height: clamp(190px, 30vh, 300px); }
+  .card { border-radius: 16px; }
+}
+@media (min-width: 761px) and (orientation: portrait) {
+  .f-title { font-size: clamp(35px, 6.1vw, 68px); }
+}
+@media (max-width: 360px), (max-height: 600px) and (max-width: 760px) {
+  .f-title { font-size: clamp(19px, 6vw, 34px); }
+  .f-price { font-size: 11px; }
+  .f-cta .cta-label { font-size: 11px; letter-spacing: 0.09em; }
+}
+@media (max-height: 520px) and (min-width: 761px) {
+  .f-title { font-size: min(4.45vw, 8.1vh); }
+}
+@media (max-width: 1080px) {
+  .chero-panel .page-title { font-size: clamp(30px, 6.2vw, 64px); }
 }
