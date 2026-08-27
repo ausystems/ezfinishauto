@@ -1,0 +1,24 @@
+# EZ Finish Auto
+
+> Mobile car detailing business based in Brampton, Ontario, Canada, serving Brampton and the Greater Toronto Area (GTA). The car stays where it is parked — at home, at work, or anywhere else — and the detailing comes to it.
+
+## Services and pricing (CAD, starting prices)
+
+- Sedans — from $90: interior deep cleaning, exterior wash and detail, wheels and tires, vacuum and steam cleaning
+- SUVs — from $125: interior wipe down, interior deep cleaning, exterior wash and detail, wheels and tires
+- Vans and trucks — from $155: full interior and exterior packages, interior deep cleaning, exterior wash and detail, wheels and tires
+
+## Service area
+
+Brampton, Ontario and the Greater Toronto Area.
+
+## Contact
+
+- Booking page: https://ezfinishauto.vercel.app/contact
+- Instagram (direct message to book): https://www.instagram.com/ezfinishauto
+- TikTok: https://www.tiktok.com/@ez.finishauto
+
+## Pages
+
+- [Home — mobile car detailing in Brampton and the GTA](https://ezfinishauto.vercel.app/): services, packages, starting prices, and the service-area map
+- [Contact — book mobile detailing](https://ezfinishauto.vercel.app/contact): booking request form and every way to reach the business

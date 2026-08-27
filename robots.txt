@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ezfinishauto.vercel.app/sitemap.xml

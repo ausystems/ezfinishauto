@@ -1,0 +1,12 @@
+# deploy only what the site serves
+node_modules
+dist
+.claude
+scripts
+audit.mjs
+qa.mjs
+package.json
+package-lock.json
+README.md
+.gitignore
+.DS_Store
