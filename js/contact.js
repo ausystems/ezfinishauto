@@ -107,7 +107,7 @@
 
     const copied = await copyText(msg);
     note.textContent = copied
-      ? "Copied to your clipboard — open Instagram and paste it in our DMs."
+      ? "Copied to your clipboard. Open Instagram and paste it in our DMs."
       : "Select the message above to copy it, then paste it in our Instagram DMs.";
 
     $("#qdoneTitle").focus();
@@ -117,7 +117,7 @@
     const ok = await copyText($("#qdoneMsg").textContent);
     note.textContent = ok
       ? "Copied to your clipboard."
-      : "Copy is blocked in this browser — select the message above instead.";
+      : "Copy is blocked in this browser, so select the message above instead.";
   });
 
   $("#qEdit").addEventListener("click", () => {

@@ -91,7 +91,7 @@ for (const view of [{ name: "desktop", w: 1440, h: 900 }, { name: "mobile", w: 3
     page.on("pageerror", (e) => errs.push("JS: " + String(e).slice(0, 140)));
     page.on("console", (c) => {
       const src = c.location()?.url || "";
-      // a 404 page's own document request logs as a failed resource — expected
+      // a 404 page's own document request logs as a failed resource (expected)
       if (pg.noindex && src === BASE + pg.path) return;
       if (c.type() === "error" && !/googleapis|gstatic|google\.com|maps/.test(src))
         errs.push("CON: " + c.text().slice(0, 140));
@@ -190,7 +190,7 @@ console.log("\n== contact form flow ==");
   await page.waitForTimeout(600);
 
   // hidden-by-default blocks must actually be invisible (computed style,
-  // not just the attribute — display:flex/grid can override [hidden])
+  // not just the attribute, since display:flex/grid can override [hidden])
   const hiddenOk = await page.evaluate(() =>
     ["qdone", "methodSms"].every((id) => {
       const el = document.getElementById(id);
@@ -217,7 +217,7 @@ console.log("\n== contact form flow ==");
 
   // valid submit → prepared message
   await page.selectOption("#q-vehicle", "SUV");
-  await page.fill("#q-area", "Brampton");
+  await page.fill("#q-area", "Etobicoke");
   await page.fill("#q-details", "Pet hair in the trunk");
   await page.click(".q-submit");
   await page.waitForTimeout(400);
@@ -229,7 +229,7 @@ console.log("\n== contact form flow ==");
     note: document.getElementById("qdoneNote").textContent,
   }));
   ok(doneState.formHidden && doneState.doneShown, "valid submit shows the prepared message");
-  ok(doneState.msg.includes("Jordan") && doneState.msg.includes("SUV") && doneState.msg.includes("Brampton") && doneState.msg.includes("Pet hair"), "message contains every field");
+  ok(doneState.msg.includes("Jordan") && doneState.msg.includes("SUV") && doneState.msg.includes("Etobicoke") && doneState.msg.includes("Pet hair"), "message contains every field");
   ok(doneState.igHref.includes("ig.me/m/ezfinishauto"), "Instagram handoff link correct");
   ok(doneState.note.length > 0, "clipboard status note shown");
 

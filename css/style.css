@@ -26,8 +26,8 @@
   --bg-dark: #050609;
   --light: #f2f4f8;
   --light-dim: #b9becb;
-  /* the accent system: chrome silver on dark, graphite on light —
-     no blue anywhere */
+  /* the accent system: chrome silver on dark, graphite on light.
+     No blue anywhere */
   --blue: #c7cdd6;
   --blue-deep: #dfe3e9;
   --blue-text: #5d5e64;
@@ -1047,7 +1047,7 @@ a.method:hover .m-a svg { transform: translateX(4px); }
 
 /* ---------- contact: split hero ----------
    The detailed truck interior holds the left of the screen edge to
-   edge and rides along while the booking panel scrolls — photo one
+   edge and rides along while the booking panel scrolls: photo one
    side, composition the other, in the site's own sharp geometry.
    Same master photo at three sizes so no device over-downloads.
 ------------------------------------------------------------ */
@@ -1144,7 +1144,7 @@ a.method:hover .m-a svg { transform: translateX(4px); }
 .chero-panel .page-title { font-size: clamp(44px, 5.6vw, 104px); }
 .chero-panel .page-lead { max-width: 56ch; font-size: clamp(15px, 1.08vw, 17.5px); }
 
-/* underline fields: label over a hairline rule, nothing boxed —
+/* underline fields: label over a hairline rule, nothing boxed:
    the input is the line */
 .cpage .field { gap: 4px; }
 .cpage .field :is(input, select, textarea) {
@@ -1372,8 +1372,8 @@ a.method:hover .m-a svg { transform: translateX(4px); }
    REDESIGN LAYER · Sora + DM Sans, white/grey/black system
    The hero keeps its exact composition and motion: only the
    typeface and the accent (blue → chrome silver) change there.
-   Everything between the hero and the footer turns light —
-   white ground, grey surfaces, black type and buttons — in the
+   Everything between the hero and the footer turns light:
+   white ground, grey surfaces, black type and buttons, in the
    editorial card language of the reference. Sizes for Sora are
    rescaled from measured width ratios so every masked line
    holds exactly the same wrapping as before.

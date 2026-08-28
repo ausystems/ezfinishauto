@@ -1,16 +1,20 @@
 # EZ Finish Auto
 
-> Mobile car detailing business based in Brampton, Ontario, Canada, serving Brampton and the Greater Toronto Area (GTA). The car stays where it is parked — at home, at work, or anywhere else — and the detailing comes to it.
+> Mobile car detailing serving all cities across the Greater Toronto Area (GTA) in Ontario, Canada. The vehicle stays where it is parked, at home, at work, or anywhere else, and the detailing comes to it.
 
 ## Services and pricing (CAD, starting prices)
 
-- Sedans — from $90: interior deep cleaning, exterior wash and detail, wheels and tires, vacuum and steam cleaning
-- SUVs — from $125: interior wipe down, interior deep cleaning, exterior wash and detail, wheels and tires
-- Vans and trucks — from $155: full interior and exterior packages, interior deep cleaning, exterior wash and detail, wheels and tires
+- Sedans, from $90: interior deep cleaning, exterior wash and detail, wheels and tires, vacuum and steam cleaning
+- SUVs, from $125: interior wipe down, interior deep cleaning, exterior wash and detail, wheels and tires
+- Vans and trucks, from $155: full interior and exterior packages, interior deep cleaning, exterior wash and detail, wheels and tires
 
 ## Service area
 
-Brampton, Ontario and the Greater Toronto Area.
+All cities across the Greater Toronto Area, Ontario.
+
+## How it works
+
+EZ Finish Auto is a mobile service. There is no shop to drive to. A detailer travels to the customer's location anywhere in the Greater Toronto Area and details the vehicle in place, whether that is a driveway, a workplace parking lot, or a street parking spot.
 
 ## Contact
 
@@ -20,5 +24,5 @@ Brampton, Ontario and the Greater Toronto Area.
 
 ## Pages
 
-- [Home — mobile car detailing in Brampton and the GTA](https://ezfinishauto.vercel.app/): services, packages, starting prices, and the service-area map
-- [Contact — book mobile detailing](https://ezfinishauto.vercel.app/contact): booking request form and every way to reach the business
+- [Home, mobile car detailing across the Greater Toronto Area](https://ezfinishauto.vercel.app/): services, packages, starting prices, and the service area map
+- [Contact, book mobile car detailing](https://ezfinishauto.vercel.app/contact): booking request form and every way to reach the business

@@ -95,7 +95,7 @@
   ------------------------------------------------------------ */
   // opaque canvas: the page behind it is exactly #050609, so painting that
   // color ourselves lets the compositor skip alpha-blending a full-viewport
-  // layer every frame — the rendered pixels are identical
+  // layer every frame. The rendered pixels are identical
   const BG = "#050609";
   const ctx = dom.canvas.getContext("2d", { alpha: false });
   let cw = 0, ch = 0, dpr = 1, portrait = false;
@@ -205,7 +205,7 @@
     document.fonts.load('460 17px "DM Sans"'),
   ]).then(() => document.fonts.ready).catch(() => {});
 
-  // reduced motion shows one still — the finished car — so it loads only
+  // reduced motion shows one still, the finished car, so it loads only
   // that frame instead of streaming all 96
   const firstFrame = loadFrame(reduced ? FRAME_COUNT - 1 : 0).then(requestDraw);
   if (!reduced) pumpLoads();
@@ -333,7 +333,7 @@
 
   /* ---------------- the service area map ----------------
      A live Google Map of the Greater Toronto Area, centered so
-     Brampton, Toronto, Mississauga, Vaughan and the lakeshore all
+     every city across the region and the lakeshore all
      read at a glance, tinted to the brand and framed by the panel.
   ------------------------------------------------------------ */
   const GMAP = "https://maps.google.com/maps?ll=43.72,-79.42&z=9&t=m&output=embed&hl=en";
@@ -464,7 +464,7 @@
     window.addEventListener("pointermove", (e) => {
       mags.forEach((m) => {
         // gsap writes opacity inline, so this reads the same value the old
-        // getComputedStyle call did — without forcing a style recalc; the
+        // getComputedStyle call did, without forcing a style recalc; the
         // rect is only measured for buttons that are actually visible
         const inlineOpacity = m.el.style.opacity;
         if (inlineOpacity !== "" && +inlineOpacity < 0.4) { m.x(0); m.y(0); return; }

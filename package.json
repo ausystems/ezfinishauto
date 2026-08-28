@@ -2,7 +2,7 @@
   "name": "ez-finish-auto",
   "version": "1.0.0",
   "private": true,
-  "description": "EZ Finish Auto — mobile car detailing in Brampton & the GTA. Cinematic scroll-driven wash experience.",
+  "description": "EZ Finish Auto, mobile car detailing across the Greater Toronto Area. Cinematic scroll-driven wash experience.",
   "type": "module",
   "scripts": {
     "dev": "node scripts/dev.mjs",

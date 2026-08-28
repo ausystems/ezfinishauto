@@ -1,6 +1,6 @@
 # EZ Finish Auto
 
-Mobile car detailing in Brampton, ON and the Greater Toronto Area. A cinematic one-page site — 96 frames of one car washed from mud to mirror finish, scrubbed on a pinned scroll timeline — plus a booking/contact page and a custom 404.
+Mobile car detailing serving all cities across the Greater Toronto Area, Ontario. A cinematic one-page site (96 frames of one car washed from mud to mirror finish, scrubbed on a pinned scroll timeline) plus a booking/contact page and a custom 404.
 
 **Stack**: hand-built static HTML/CSS/JS. GSAP + ScrollTrigger (vendored) drive the scroll experience. No framework, no build step.
 
@@ -8,8 +8,8 @@ Mobile car detailing in Brampton, ON and the Greater Toronto Area. A cinematic o
 
 | URL | File | Purpose |
 | --- | --- | --- |
-| `/` | `index.html` | Home — hero wash experience, packages & pricing, booking section, service-area map |
-| `/contact` | `contact.html` | Booking / contact — direct channels + a booking-request composer form |
+| `/` | `index.html` | Home, hero wash experience, packages & pricing, booking section, service-area map |
+| `/contact` | `contact.html` | Booking / contact, direct channels + a booking-request composer form |
 | anything else | `404.html` | Custom 404 (served with a real 404 status) |
 
 ## Run locally
@@ -19,12 +19,12 @@ npm install
 npm run dev        # http://localhost:4173
 ```
 
-`scripts/dev.mjs` mirrors production behaviour (Vercel `cleanUrls`, no trailing slashes, real 404 status, same security headers), so what you see locally is what deploys. Don't use a plain static server — `/contact` only resolves with clean-URL handling.
+`scripts/dev.mjs` mirrors production behaviour (Vercel `cleanUrls`, no trailing slashes, real 404 status, same security headers), so what you see locally is what deploys. Don't use a plain static server, `/contact` only resolves with clean-URL handling.
 
 ## Deploy (GitHub + Vercel)
 
 1. Push this repository to GitHub.
-2. In Vercel: **Add New Project → Import** the repo. Framework preset: **Other**. No build command, no output directory — it deploys as-is.
+2. In Vercel: **Add New Project → Import** the repo. Framework preset: **Other**. No build command, no output directory, it deploys as-is.
 3. `vercel.json` supplies clean URLs, redirects, caching, and security headers. `.vercelignore` keeps dev tooling out of the deployment.
 
 ### When the real domain is ready
@@ -39,18 +39,18 @@ then commit and push. Finally, submit `sitemap.xml` in Google Search Console.
 
 ### When the business phone number is ready
 
-Set `smsNumber` in [`js/config.js`](js/config.js) (full international format, e.g. `"+16475551234"`). Every "text us" CTA then opens the messages app with a prefilled greeting, the contact page shows a Text Message card, and the booking form offers "Send as text". Until then, those CTAs route to `/contact` — nothing on the site is ever a dead link.
+Set `smsNumber` in [`js/config.js`](js/config.js) (full international format, e.g. `"+16475551234"`). Every "text us" CTA then opens the messages app with a prefilled greeting, the contact page shows a Text Message card, and the booking form offers "Send as text". Until then, those CTAs route to `/contact`, nothing on the site is ever a dead link.
 
 ## SEO
 
 **Keyword strategy** (local, transactional intent):
 
-- **Primary (home)**: mobile car detailing Brampton
-- **Secondary**: mobile auto detailing GTA · car detailing Brampton · mobile detailing near me · interior & exterior detailing
-- **Long-tail**: mobile car detailing at your home/driveway, SUV / van / truck detailing prices Brampton
-- **Contact page**: book mobile car detailing Brampton · car detailing quote
+- **Primary (home)**: mobile car detailing Greater Toronto Area / mobile car detailing GTA
+- **Secondary**: mobile auto detailing Toronto · mobile detailing near me · interior & exterior car detailing · car detailing at home
+- **Long-tail**: mobile car detailing at your home or workplace, SUV / van / truck detailing prices GTA
+- **Contact page**: book mobile car detailing GTA · mobile car detailing quote
 
-Mapping: the homepage is the money page (service + packages + prices + area); `/contact` is the conversion page. Copy is the client's approved poster copy — deliberately terse and human; keywords live in metadata, headings, alt text, structured data, and the two pages' distinct titles/descriptions, not stuffed into the visible copy.
+Mapping: the homepage is the money page (service + packages + prices + area); `/contact` is the conversion page. Copy is the client's approved poster copy, deliberately terse and human; keywords live in metadata, headings, alt text, structured data, and the two pages' distinct titles/descriptions, not stuffed into the visible copy.
 
 **Implemented**: unique titles/descriptions/canonicals per page · full Open Graph + Twitter cards with a dedicated 1200×630 share image · `AutoDetailing` (+`WebSite`/`WebPage`/`ContactPage`/`BreadcrumbList`) JSON-LD aligned with visible content · `sitemap.xml` · `robots.txt` · `llms.txt` for AI search · semantic HTML with one `h1` per page · descriptive alts · footer site navigation (doubles as the HTML sitemap) · `lang="en-CA"` · noindex on the 404.
 
