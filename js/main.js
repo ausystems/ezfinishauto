@@ -548,16 +548,15 @@
     });
   }
 
-  /* ---------------- text-message links ----------------
-     One configured number (js/config.js) drives the floating
-     button and every booking button. Until the number is set,
-     those CTAs route to the contact page so none of them is
-     ever a dead link.
+  /* ---------------- the floating text button ----------------
+     Every booking CTA leads to the contact page; only the green
+     message bubble opens the messages app directly, with the
+     short greeting already written out.
   ------------------------------------------------------------ */
   (() => {
     const sms = typeof CFG.smsHref === "function" ? CFG.smsHref() : "";
-    const href = sms || CFG.contactPage || "/contact";
-    $$("[data-sms]").forEach((el) => { el.href = href; });
+    const btn = $(".sms");
+    if (btn && sms) btn.href = sms;
   })();
 
   /* ---------------- anchors ---------------- */

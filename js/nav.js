@@ -90,3 +90,19 @@
   window.addEventListener("load", measure);
   measure();
 })();
+
+/* ============================================================
+   Prefilled text links.
+   Static links marked .js-sms point at sms:<number> so they
+   work without JavaScript; here they gain the short prefilled
+   greeting, with the right body separator per platform.
+   ============================================================ */
+
+(() => {
+  "use strict";
+  const CFG = window.EZ_CONFIG || {};
+  if (typeof CFG.smsHref !== "function") return;
+  const href = CFG.smsHref();
+  if (!href) return;
+  document.querySelectorAll("a.js-sms").forEach((a) => { a.href = href; });
+})();

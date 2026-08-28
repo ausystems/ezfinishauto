@@ -5,14 +5,14 @@
    ============================================================ */
 
 window.EZ_CONFIG = {
-  /* The business phone number for "text us" links, in full
-     international format, for example "+16475551234".
-     Leave as "" until the real number is ready: every text CTA
-     then routes to the contact page instead of a dead link. */
-  smsNumber: "",
+  /* The business phone number, in full international format. */
+  smsNumber: "+16474244813",
+
+  /* How the number reads on the page. */
+  smsDisplay: "+1 647-424-4813",
 
   /* Prefilled first message for text-message links. */
-  smsGreeting: "Hi EZ Finish Auto, I would like to book mobile detailing.",
+  smsGreeting: "Hi EZ Finish Auto! I'd like to book a mobile detail.",
 
   /* Contact destinations. */
   instagram: "https://www.instagram.com/ezfinishauto",

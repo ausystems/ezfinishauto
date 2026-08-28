@@ -1876,3 +1876,80 @@ html.menu-open { overflow: hidden; }
   .pname, .pinfo { position: static; }
   .pshot { position: static; width: min(84vw, 620px); margin: 18px auto; }
 }
+
+/* ============================================================
+   PHONE · the number with call and text everywhere it appears
+   ============================================================ */
+
+/* STARTING FROM reads at label size, not fine print */
+.price-label { font-size: clamp(12px, 0.95vw, 14.5px); }
+
+.book-phone {
+  margin-top: clamp(14px, 2vh, 20px);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 18px;
+}
+.book-phone .bp-num {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(16px, 1.35vw, 21px);
+  letter-spacing: 0.02em;
+  color: #0b0e17;
+}
+.book-phone .bp-actions { display: inline-flex; column-gap: 16px; }
+.book-phone .bp-actions a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  font-family: var(--display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: #6e6f76;
+  box-shadow: inset 0 -1px 0 #c9c9d0;
+  transition: color 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
+}
+.book-phone .bp-actions a:hover { color: #0b0e17; box-shadow: inset 0 -1px 0 #0b0e17; }
+
+.footer-phone {
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 18px;
+}
+.footer-phone .fp-num {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(17px, 1.5vw, 22px);
+  letter-spacing: 0.02em;
+  color: var(--light);
+  transition: color 0.3s var(--ease-out);
+}
+.footer-phone .fp-num:hover { color: #c7cdd6; }
+.footer-phone .fp-actions { display: inline-flex; column-gap: 16px; }
+.footer-phone .fp-actions a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  font-family: var(--display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--light-dim);
+  box-shadow: inset 0 -1px 0 rgba(242, 244, 248, 0.3);
+  transition: color 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
+}
+.footer-phone .fp-actions a:hover { color: var(--light); box-shadow: inset 0 -1px 0 var(--light); }

@@ -191,12 +191,11 @@ console.log("\n== contact form flow ==");
 
   // hidden-by-default blocks must actually be invisible (computed style,
   // not just the attribute, since display:flex/grid can override [hidden])
-  const hiddenOk = await page.evaluate(() =>
-    ["qdone", "methodSms"].every((id) => {
-      const el = document.getElementById(id);
-      return el && getComputedStyle(el).display === "none";
-    }));
-  ok(hiddenOk, "success panel and sms card are visually hidden by default");
+  const hiddenOk = await page.evaluate(() => {
+    const el = document.getElementById("qdone");
+    return el && getComputedStyle(el).display === "none";
+  });
+  ok(hiddenOk, "success panel is visually hidden by default");
 
   // empty submit → validation errors, form stays
   await page.click(".q-submit");
@@ -206,7 +205,7 @@ console.log("\n== contact form flow ==");
     doneHidden: getComputedStyle(document.getElementById("qdone")).display === "none",
     focused: document.activeElement?.id,
   }));
-  ok(errState.errs === 2 && errState.invalid === 2, `empty submit shows both errors (${errState.errs})`);
+  ok(errState.errs === 2 && errState.invalid === 2, `empty submit shows both required errors (${errState.errs})`);
   ok(errState.doneHidden, "empty submit does not advance");
   ok(errState.focused === "q-name", "focus moves to the first error");
 
@@ -215,10 +214,19 @@ console.log("\n== contact form flow ==");
   const cleared = await page.evaluate(() => document.querySelectorAll("#fw-name.has-err").length);
   ok(cleared === 0, "error clears while typing");
 
-  // valid submit → prepared message
-  await page.selectOption("#q-vehicle", "SUV");
-  await page.fill("#q-area", "Etobicoke");
-  await page.fill("#q-details", "Pet hair in the trunk");
+  // a malformed email is caught before composing
+  await page.fill("#q-message", "Pet hair in the trunk please");
+  await page.fill("#q-email", "not-an-email");
+  await page.click(".q-submit");
+  const badEmail = await page.evaluate(() => ({
+    err: document.querySelectorAll("#fw-email.has-err").length,
+    doneHidden: getComputedStyle(document.getElementById("qdone")).display === "none",
+  }));
+  ok(badEmail.err === 1 && badEmail.doneHidden, "invalid email blocks the submit");
+
+  // valid submit → prepared message with every field
+  await page.fill("#q-email", "jordan@example.com");
+  await page.fill("#q-phone", "647 555 0123");
   await page.click(".q-submit");
   await page.waitForTimeout(400);
   const doneState = await page.evaluate(() => ({
@@ -226,11 +234,14 @@ console.log("\n== contact form flow ==");
     doneShown: getComputedStyle(document.getElementById("qdone")).display !== "none",
     msg: document.getElementById("qdoneMsg").textContent,
     igHref: document.getElementById("qIg").href,
+    smsHref: document.getElementById("qSms").href,
+    smsShown: getComputedStyle(document.getElementById("qSms")).display !== "none",
     note: document.getElementById("qdoneNote").textContent,
   }));
   ok(doneState.formHidden && doneState.doneShown, "valid submit shows the prepared message");
-  ok(doneState.msg.includes("Jordan") && doneState.msg.includes("SUV") && doneState.msg.includes("Etobicoke") && doneState.msg.includes("Pet hair"), "message contains every field");
+  ok(doneState.msg.includes("Jordan") && doneState.msg.includes("647 555 0123") && doneState.msg.includes("jordan@example.com") && doneState.msg.includes("Pet hair"), "message contains every field");
   ok(doneState.igHref.includes("ig.me/m/ezfinishauto"), "Instagram handoff link correct");
+  ok(doneState.smsShown && doneState.smsHref.startsWith("sms:+16474244813"), "text handoff opens the business number");
   ok(doneState.note.length > 0, "clipboard status note shown");
 
   // edit returns to the form with values intact

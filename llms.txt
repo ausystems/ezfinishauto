@@ -4,9 +4,9 @@
 
 ## Services and pricing (CAD, starting prices)
 
-- Sedans, from $90: interior deep cleaning, exterior wash and detail, wheels and tires, vacuum and steam cleaning
-- SUVs, from $125: interior wipe down, interior deep cleaning, exterior wash and detail, wheels and tires
-- Vans and trucks, from $155: full interior and exterior packages, interior deep cleaning, exterior wash and detail, wheels and tires
+- Sedans, from $95: interior deep cleaning, exterior wash and detail, wheels and tires, vacuum and steam cleaning
+- SUVs, from $135: interior wipe down, interior deep cleaning, exterior wash and detail, wheels and tires
+- Vans and trucks, from $185: full interior and exterior packages, interior deep cleaning, exterior wash and detail, wheels and tires
 
 ## Service area
 
@@ -18,6 +18,7 @@ EZ Finish Auto is a mobile service. There is no shop to drive to. A detailer tra
 
 ## Contact
 
+- Phone (call or text): +1 647-424-4813
 - Booking page: https://ezfinishauto.vercel.app/contact
 - Instagram (direct message to book): https://www.instagram.com/ezfinishauto
 - TikTok: https://www.tiktok.com/@ez.finishauto

@@ -37,9 +37,9 @@ node scripts/set-site-url.mjs https://www.yourdomain.com
 
 then commit and push. Finally, submit `sitemap.xml` in Google Search Console.
 
-### When the business phone number is ready
+### The business phone number
 
-Set `smsNumber` in [`js/config.js`](js/config.js) (full international format, e.g. `"+16475551234"`). Every "text us" CTA then opens the messages app with a prefilled greeting, the contact page shows a Text Message card, and the booking form offers "Send as text". Until then, those CTAs route to `/contact`, nothing on the site is ever a dead link.
+The number is `+1 647-424-4813`, configured once as `smsNumber` in [`js/config.js`](js/config.js). Every booking CTA leads to the contact page; the green message bubble and every TEXT link open the messages app to that number with a short prefilled greeting, and CALL links dial it. The number is displayed with call and text options in the footer of every page, in the booking section, and on the contact page.
 
 ## SEO
 

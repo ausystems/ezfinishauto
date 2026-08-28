@@ -1,8 +1,9 @@
 /* ============================================================
    EZ FINISH AUTO · contact page
    The booking form is a message composer: it validates, writes
-   the booking request, copies it, and hands off to Instagram or
-   the messages app. Nothing is sent or stored by the site.
+   the booking request, copies it, and hands off to a text to
+   the business number or an Instagram DM. Nothing is sent or
+   stored by the site.
    ============================================================ */
 
 (() => {
@@ -11,27 +12,15 @@
   const CFG = window.EZ_CONFIG || {};
   const $ = (s, c = document) => c.querySelector(s);
 
-  /* ---------------- text-message method card ----------------
-     Shown only once a real number is configured in js/config.js,
-     so the page never advertises a channel that does not exist. */
-  const smsHref = typeof CFG.smsHref === "function" ? CFG.smsHref() : "";
-  const methodSms = $("#methodSms");
-  if (smsHref && methodSms) {
-    methodSms.href = smsHref;
-    methodSms.hidden = false;
-    const label = $("#methodSmsNumber");
-    if (label && CFG.smsNumber) label.textContent = CFG.smsNumber;
-  }
-
-  /* ---------------- form ---------------- */
   const form = $("#qform");
   const done = $("#qdone");
   if (!form || !done) return;
 
-  const fields = {
+  const required = {
     name: { input: $("#q-name"), wrap: $("#fw-name") },
-    vehicle: { input: $("#q-vehicle"), wrap: $("#fw-vehicle") },
+    message: { input: $("#q-message"), wrap: $("#fw-message") },
   };
+  const email = { input: $("#q-email"), wrap: $("#fw-email") };
 
   function setError(f, on) {
     f.wrap.classList.toggle("has-err", on);
@@ -39,24 +28,23 @@
   }
 
   ["input", "change"].forEach((ev) => {
-    Object.values(fields).forEach((f) =>
+    Object.values(required).forEach((f) =>
       f.input.addEventListener(ev, () => setError(f, false)));
+    email.input.addEventListener(ev, () => setError(email, false));
   });
 
   function composeMessage() {
     const name = $("#q-name").value.trim();
-    const vehicle = $("#q-vehicle").value;
-    const area = $("#q-area").value.trim();
-    const when = $("#q-when").value.trim();
-    const details = $("#q-details").value.trim();
+    const phone = $("#q-phone").value.trim();
+    const mail = $("#q-email").value.trim();
+    const message = $("#q-message").value.trim();
     const lines = [
-      `Hi EZ Finish Auto, I'd like to book mobile detailing.`,
+      CFG.smsGreeting || "Hi EZ Finish Auto! I'd like to book a mobile detail.",
       `Name: ${name}`,
-      `Vehicle: ${vehicle}`,
     ];
-    if (area) lines.push(`Area: ${area}`);
-    if (when) lines.push(`Preferred day: ${when}`);
-    if (details) lines.push(`Details: ${details}`);
+    if (phone) lines.push(`Phone: ${phone}`);
+    if (mail) lines.push(`Email: ${mail}`);
+    lines.push(`Message: ${message}`);
     return lines.join("\n");
   }
 
@@ -88,11 +76,15 @@
     if ($("#q-company").value) return;
 
     let firstBad = null;
-    Object.values(fields).forEach((f) => {
+    Object.values(required).forEach((f) => {
       const bad = !f.input.value || !f.input.value.trim();
       setError(f, bad);
       if (bad && !firstBad) firstBad = f.input;
     });
+    if (email.input.value.trim() && !email.input.validity.valid) {
+      setError(email, true);
+      if (!firstBad) firstBad = email.input;
+    }
     if (firstBad) { firstBad.focus(); return; }
 
     const msg = composeMessage();
@@ -107,8 +99,8 @@
 
     const copied = await copyText(msg);
     note.textContent = copied
-      ? "Copied to your clipboard. Open Instagram and paste it in our DMs."
-      : "Select the message above to copy it, then paste it in our Instagram DMs.";
+      ? "Copied to your clipboard. Send it as a text, or paste it in our Instagram DMs."
+      : "Select the message above to copy it, then send it as a text or an Instagram DM.";
 
     $("#qdoneTitle").focus();
   });
