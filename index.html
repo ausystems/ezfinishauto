@@ -50,6 +50,11 @@
       .frame { position: relative; inset: auto; align-items: flex-start; padding: clamp(34px, 6vh, 60px) var(--pad-x); }
       .frame + .frame { border-top: 1px solid var(--hairline-d); }
       .nav-toggle { display: none; }
+      .pstage { height: auto; }
+      .pslide { position: static; opacity: 1; }
+      .pslide + .pslide { margin-top: 60px; }
+      .pname, .pinfo { position: static; }
+      .pshot { position: static; width: min(92vw, 700px); margin: 18px auto; }
     </style>
   </noscript>
   <script type="application/ld+json">
@@ -231,65 +236,73 @@
           <span class="t-mask"><span class="t-line">CHOOSE YOUR <em>FINISH</em>.</span></span>
         </h2>
       </div>
-      <div class="cards">
-        <article class="card">
-          <div class="card-inner">
-            <h3 class="card-name">SEDANS</h3>
+      <!-- one stage, three vehicles: the story scrubs from sedan to
+           SUV to van as you scroll -->
+      <div class="pstage" id="pstage">
+        <article class="pslide">
+          <h3 class="pname">SEDANS</h3>
+          <figure class="pshot"><img src="assets/veh/sedan.webp" width="1000" height="400" loading="lazy" decoding="async" alt="White sedan with a clean side profile after mobile car detailing by EZ Finish Auto in the Greater Toronto Area" /></figure>
+          <div class="pinfo">
             <ul class="card-list">
               <li>Interior Deep Cleaning</li>
               <li>Exterior Wash &amp; Detail</li>
               <li>Wheels &amp; Tires</li>
               <li>Vacuum, Steam &amp; Cleaning</li>
             </ul>
-            <div class="card-price">
-              <span class="price">$90</span>
-              <span class="price-label">STARTING FROM</span>
+            <div class="prow">
+              <div class="card-price">
+                <span class="price">$90</span>
+                <span class="price-label">STARTING FROM</span>
+              </div>
+              <a class="cta card-cta" href="#book">
+                <span class="cta-label">BOOK MOBILE DETAILING</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l14 0"/><path d="M13 18l6 -6"/><path d="M13 6l6 6"/></svg>
+              </a>
             </div>
-            <a class="cta card-cta" href="#book">
-              <span class="cta-label">BOOK MOBILE DETAILING</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l14 0"/><path d="M13 18l6 -6"/><path d="M13 6l6 6"/></svg>
-            </a>
-            <figure class="card-shot"><img src="assets/veh/sedan.webp" width="1000" height="400" loading="lazy" decoding="async" alt="White sedan with a clean side profile after mobile car detailing by EZ Finish Auto in the Greater Toronto Area" /></figure>
           </div>
         </article>
-        <article class="card">
-          <div class="card-inner">
-            <h3 class="card-name">SUVs</h3>
+        <article class="pslide">
+          <h3 class="pname">SUVs</h3>
+          <figure class="pshot"><img src="assets/veh/suv.webp" width="1000" height="400" loading="lazy" decoding="async" alt="White SUV with a spotless finish after mobile SUV detailing by EZ Finish Auto in the Greater Toronto Area" /></figure>
+          <div class="pinfo">
             <ul class="card-list">
               <li>Interior Wipe Down</li>
               <li>Interior Deep Cleaning</li>
               <li>Exterior Wash &amp; Detail</li>
               <li>Wheels &amp; Tires</li>
             </ul>
-            <div class="card-price">
-              <span class="price">$125</span>
-              <span class="price-label">STARTING FROM</span>
+            <div class="prow">
+              <div class="card-price">
+                <span class="price">$125</span>
+                <span class="price-label">STARTING FROM</span>
+              </div>
+              <a class="cta card-cta" href="#book">
+                <span class="cta-label">BOOK MOBILE DETAILING</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l14 0"/><path d="M13 18l6 -6"/><path d="M13 6l6 6"/></svg>
+              </a>
             </div>
-            <a class="cta card-cta" href="#book">
-              <span class="cta-label">BOOK MOBILE DETAILING</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l14 0"/><path d="M13 18l6 -6"/><path d="M13 6l6 6"/></svg>
-            </a>
-            <figure class="card-shot"><img src="assets/veh/suv.webp" width="1000" height="400" loading="lazy" decoding="async" alt="White SUV with a spotless finish after mobile SUV detailing by EZ Finish Auto in the Greater Toronto Area" /></figure>
           </div>
         </article>
-        <article class="card">
-          <div class="card-inner">
-            <h3 class="card-name">VANS &amp; TRUCKS</h3>
+        <article class="pslide">
+          <h3 class="pname">VANS &amp; TRUCKS</h3>
+          <figure class="pshot"><img src="assets/veh/van.webp" width="1000" height="400" loading="lazy" decoding="async" alt="White work van freshly cleaned by EZ Finish Auto mobile van and truck detailing in the Greater Toronto Area" /></figure>
+          <div class="pinfo">
             <ul class="card-list">
               <li>Full Interior + Exterior Packages</li>
               <li>Interior Deep Cleaning</li>
               <li>Exterior Wash &amp; Detail</li>
               <li>Wheels &amp; Tires</li>
             </ul>
-            <div class="card-price">
-              <span class="price">$155</span>
-              <span class="price-label">STARTING FROM</span>
+            <div class="prow">
+              <div class="card-price">
+                <span class="price">$155</span>
+                <span class="price-label">STARTING FROM</span>
+              </div>
+              <a class="cta card-cta" href="#book">
+                <span class="cta-label">BOOK MOBILE DETAILING</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l14 0"/><path d="M13 18l6 -6"/><path d="M13 6l6 6"/></svg>
+              </a>
             </div>
-            <a class="cta card-cta" href="#book">
-              <span class="cta-label">BOOK MOBILE DETAILING</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l14 0"/><path d="M13 18l6 -6"/><path d="M13 6l6 6"/></svg>
-            </a>
-            <figure class="card-shot"><img src="assets/veh/van.webp" width="1000" height="400" loading="lazy" decoding="async" alt="White work van freshly cleaned by EZ Finish Auto mobile van and truck detailing in the Greater Toronto Area" /></figure>
           </div>
         </article>
       </div>

@@ -234,6 +234,13 @@
       gsap.set(f.rule, { scaleX: 0 });
       gsap.set(f.bits, { autoAlpha: 0, y: 20 });
     });
+    // pricing stage: the sedan's finished look is the CSS baseline;
+    // the SUV and van wait off stage until their moment
+    $$(".pslide").slice(1).forEach((sl) => {
+      gsap.set($(".pshot", sl), { xPercent: 60, autoAlpha: 0 });
+      gsap.set($(".pname", sl), { x: -70, autoAlpha: 0 });
+      gsap.set($(".pinfo", sl), { y: 26, autoAlpha: 0 });
+    });
   }
 
   // without motion the still should be the finished car, not the dirty one
@@ -314,6 +321,57 @@
     });
 
     return tl;
+  }
+
+  /* ---------------- pricing stage: sedan -> SUV -> van ----------------
+     A second pinned scrub. Each vehicle drives out to the left while
+     the next arrives from the right, the ghost name counter-slides,
+     and the price strip hands over. The sedan's visible state is the
+     CSS baseline so a rewind to the top always lands complete.
+  ------------------------------------------------------------ */
+  function buildPricingScrub() {
+    const stage = $("#pstage");
+    if (!stage) return;
+    const FT = { immediateRender: false };
+    const slides = $$(".pslide", stage).map((el) => ({
+      shot: $(".pshot", el), name: $(".pname", el), info: $(".pinfo", el),
+    }));
+    const tl = gsap.timeline({
+      defaults: { ease: "none" },
+      scrollTrigger: {
+        trigger: stage,
+        start: "top top",
+        end: "+=220%",
+        scrub: 1,
+        pin: true,
+        anticipatePin: 1,
+      },
+    });
+    const shows = [
+      { s: slides[0], in: null, out: 3.4 },
+      { s: slides[1], in: 3.0, out: 6.6 },
+      { s: slides[2], in: 6.2, out: null },
+    ];
+    shows.forEach(({ s, in: tin, out }) => {
+      if (tin !== null) {
+        tl.fromTo(s.shot, { xPercent: 60, autoAlpha: 0 },
+            { xPercent: 0, autoAlpha: 1, duration: 1.15, ease: "power3.out", ...FT }, tin)
+          .fromTo(s.name, { x: -70, autoAlpha: 0 },
+            { x: 0, autoAlpha: 1, duration: 1.05, ease: "power3.out", ...FT }, tin + 0.12)
+          .fromTo(s.info, { y: 26, autoAlpha: 0 },
+            { y: 0, autoAlpha: 1, duration: 0.95, ease: "power3.out", ...FT }, tin + 0.28);
+      }
+      if (out !== null) {
+        tl.fromTo(s.shot, { xPercent: 0, autoAlpha: 1 },
+            { xPercent: -60, autoAlpha: 0, duration: 1.0, ease: "power2.in", ...FT }, out - 1.0)
+          .fromTo(s.name, { x: 0, autoAlpha: 1 },
+            { x: 70, autoAlpha: 0, duration: 0.9, ease: "power2.in", ...FT }, out - 0.95)
+          .fromTo(s.info, { y: 0, autoAlpha: 1 },
+            { y: 26, autoAlpha: 0, duration: 0.85, ease: "power2.in", ...FT }, out - 0.9);
+      }
+    });
+    // the van rides the closing stretch of the pin
+    tl.set({}, {}, 9.4);
   }
 
   /* ---------------- glass card physics ---------------- */
@@ -400,11 +458,6 @@
 
     rise(".services-title .t-line", ".services");
     fade(".services-sub", ".services", 0.25);
-    gsap.from(".card", {
-      y: 72, rotationX: -7, autoAlpha: 0, transformPerspective: 1400, transformOrigin: "center bottom",
-      duration: 1.15, ease: "power3.out", stagger: 0.14,
-      scrollTrigger: { trigger: ".cards", start: "top 82%", once: true },
-    });
 
     rise(".book-title .t-line", ".book");
     fade(".book .sec-eyebrow, .book-body p, .book-col .cta, .book-city", ".book", 0.16);
@@ -525,7 +578,7 @@
   state.zoom = portrait ? 1.02 : 1.035;
   buildMap();
   buildCardTilt();
-  if (!reduced) { buildScrub(); buildReveals(); initNavFlip(); ScrollTrigger.refresh(); }
+  if (!reduced) { buildScrub(); buildPricingScrub(); buildReveals(); initNavFlip(); ScrollTrigger.refresh(); }
   else { initNavFlip(); document.body.classList.add("ready"); }
 
   // verification hook: /?p=0.5 scrolls to that pin progress after load
@@ -573,7 +626,13 @@
           gsap.set(f.rule, { scaleX: 1, transformOrigin: "left center" });
           gsap.set(f.bits, { autoAlpha: i === 0 ? 1 : 0, y: 0 });
         });
+        $$(".pslide").forEach((sl, i) => {
+          gsap.set($(".pshot", sl), { xPercent: i === 0 ? 0 : 60, autoAlpha: i === 0 ? 1 : 0 });
+          gsap.set($(".pname", sl), { x: i === 0 ? 0 : -70, autoAlpha: i === 0 ? 1 : 0 });
+          gsap.set($(".pinfo", sl), { y: i === 0 ? 0 : 26, autoAlpha: i === 0 ? 1 : 0 });
+        });
         buildScrub();
+        buildPricingScrub();
         initNavFlip();
         buildFooterScrub();
       }
