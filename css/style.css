@@ -796,15 +796,15 @@ ul { list-style: none; }
   z-index: 70;
   display: grid;
   place-items: center;
-  width: 58px;
-  height: 58px;
+  width: 52px;
+  height: 52px;
   border-radius: 23%;
   background: linear-gradient(180deg, #5bf675 0%, #0bbf2c 100%);
   box-shadow: 0 12px 30px rgba(8, 132, 38, 0.44), inset 0 1px 0 rgba(255, 255, 255, 0.34);
   transition: transform 0.4s var(--ease-out), filter 0.3s var(--ease-out),
     box-shadow 0.4s var(--ease-out);
 }
-.sms-ico { width: 38px; height: 38px; fill: #ffffff; }
+.sms-ico { width: 34px; height: 34px; fill: #ffffff; }
 .sms:hover {
   filter: brightness(1.06);
   transform: translateY(-3px);
@@ -854,8 +854,8 @@ ul { list-style: none; }
   .footer-socials a { font-size: 13px; }
   .footer-mark { font-size: 15.7vw; }
 
-  .sms { width: 54px; height: 54px; }
-  .sms-ico { width: 35px; height: 35px; }
+  .sms { width: 48px; height: 48px; }
+  .sms-ico { width: 31px; height: 31px; }
 }
 
 /* portrait tablets: the cards hold the top of the frame and the
@@ -883,8 +883,8 @@ ul { list-style: none; }
 
 /* very small phones: trim the mark, keep it a comfortable tap target */
 @media (max-width: 380px) {
-  .sms { width: 50px; height: 50px; }
-  .sms-ico { width: 33px; height: 33px; }
+  .sms { width: 46px; height: 46px; }
+  .sms-ico { width: 30px; height: 30px; }
   .brand-tag { display: none; }   /* the wordmark carries it at this width */
   .brand { min-height: 44px; }
 }
@@ -897,8 +897,8 @@ ul { list-style: none; }
 
 /* short landscape: keep the button clear of the content */
 @media (max-height: 480px) {
-  .sms { width: 46px; height: 46px; }
-  .sms-ico { width: 30px; height: 30px; }
+  .sms { width: 44px; height: 44px; }
+  .sms-ico { width: 28px; height: 28px; }
 }
 
 /* ============================================================
