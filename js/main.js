@@ -456,7 +456,6 @@
       });
     };
 
-    rise(".services-title .t-line", ".services");
     fade(".services-sub", ".services", 0.25);
 
     rise(".book-title .t-line", ".book");

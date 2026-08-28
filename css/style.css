@@ -1449,6 +1449,7 @@ body { font-weight: 460; }
   background-color: var(--paper);
   background-image: none;
   color: #0b0e17;
+  padding-top: clamp(32px, 5vh, 64px);
 }
 .services::after { content: none; }
 .services-head { margin-bottom: clamp(34px, 5vh, 60px); }
