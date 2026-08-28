@@ -16,6 +16,9 @@
 
   gsap.registerPlugin(ScrollTrigger);
   gsap.ticker.lagSmoothing(0);
+  // mobile browsers fire resize when the address bar slides away; the
+  // pin must not be recalculated in the middle of a scroll
+  ScrollTrigger.config({ ignoreMobileResize: true });
 
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const finePointer = window.matchMedia("(pointer: fine)").matches;
@@ -537,7 +540,19 @@
   }
 
   let resizeT;
+  let lastW = window.innerWidth;
+  let lastCanvasH = dom.canvas.clientHeight;
   window.addEventListener("resize", () => {
+    // The hero is sized in svh, so an address bar sliding away changes
+    // innerHeight without moving anything. Refreshing ScrollTrigger for
+    // that would re-measure the pin mid-scroll and jump the page, so a
+    // resize only counts when the width changed or the canvas box
+    // genuinely resized.
+    const w = window.innerWidth;
+    const canvasH = dom.canvas.clientHeight;
+    if (w === lastW && Math.abs(canvasH - lastCanvasH) < 2) return;
+    lastW = w;
+    lastCanvasH = canvasH;
     clearTimeout(resizeT);
     resizeT = setTimeout(() => {
       const wasPortrait = portrait;

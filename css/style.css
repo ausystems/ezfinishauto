@@ -63,6 +63,7 @@ body {
   font-weight: 480;
   font-optical-sizing: auto;
   overflow-x: hidden;
+  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   opacity: 0;
@@ -1774,6 +1775,7 @@ body { font-weight: 460; }
   justify-content: space-between;
   padding: calc(70px + 8vh) var(--pad-x) max(6vh, 40px);
   background: #050609;
+  overscroll-behavior: contain;
 }
 @media (prefers-reduced-motion: no-preference) {
   .nav-menu:not([hidden]) { animation: menuIn 0.28s var(--ease-out); }
