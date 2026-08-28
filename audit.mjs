@@ -45,13 +45,30 @@ for (const [label, w, h, mobile] of VIEWS) {
     const out = [];
     const de = document.documentElement;
     if (de.scrollWidth > de.clientWidth + 1) out.push(`H-OVERFLOW page ${de.scrollWidth}>${de.clientWidth}`);
-    // any element wider than viewport
+    // any element whose VISIBLE box exceeds the viewport. An element
+    // deliberately clipped by an overflow-hidden ancestor (a bleed
+    // inside a card) is measured by what actually renders, not its
+    // raw rect: intersect with every clipping ancestor first.
     document.querySelectorAll('body *').forEach(el => {
-      const r = el.getBoundingClientRect();
-      if (r.width > 0 && (r.right > innerWidth + 2 || r.left < -2)) {
+      let left = el.getBoundingClientRect().left;
+      let right = el.getBoundingClientRect().right;
+      const width = right - left;
+      if (width <= 0) return;
+      let a = el.parentElement;
+      while (a && a !== document.body) {
+        const acs = getComputedStyle(a);
+        if (/(hidden|clip)/.test(acs.overflow + acs.overflowX)) {
+          const ar = a.getBoundingClientRect();
+          left = Math.max(left, ar.left);
+          right = Math.min(right, ar.right);
+        }
+        a = a.parentElement;
+      }
+      if (right <= left) return; // fully clipped away
+      if (right > innerWidth + 2 || left < -2) {
         const cs = getComputedStyle(el);
         if (cs.position !== 'fixed' && cs.overflow !== 'hidden' && el.id !== 'wash' && !el.closest('#wash')) {
-          out.push(`OUT-OF-BOUNDS ${el.tagName}.${(el.className||'').toString().split(' ')[0]} L${Math.round(r.left)} R${Math.round(r.right)}`);
+          out.push(`OUT-OF-BOUNDS ${el.tagName}.${(el.className||'').toString().split(' ')[0]} L${Math.round(left)} R${Math.round(right)}`);
         }
       }
     });
