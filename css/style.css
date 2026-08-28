@@ -2117,3 +2117,33 @@ html.menu-open { overflow: hidden; }
   .cpage .qform,
   .cpage .qdone { border-radius: 18px; padding: clamp(22px, 5.5vw, 30px); }
 }
+
+/* ============================================================
+   GREY TITLE WORDS · inked outline
+   Every title word set in grey — the <em> accents in the hero,
+   booking, contact and 404 headlines, and the vehicle names on
+   the pricing stage — carries a black outline so it reads clean
+   over photography and over paper alike. The ring is drawn with
+   shadows, never a centre stroke, so the letterform keeps its
+   full weight. Radius follows the type size and never falls
+   under a hairline on small screens.
+   ------------------------------------------------------------ */
+
+.f-title em,
+.services-title em,
+.book-title em,
+.page-title em,
+.nf-code em,
+.pname {
+  --ink-r: clamp(1.2px, 0.024em, 5px);
+  --ink-x: clamp(0.85px, 0.017em, 3.6px);
+  text-shadow:
+    var(--ink-r) 0 0 #000,
+    calc(var(--ink-r) * -1) 0 0 #000,
+    0 var(--ink-r) 0 #000,
+    0 calc(var(--ink-r) * -1) 0 #000,
+    var(--ink-x) var(--ink-x) 0 #000,
+    calc(var(--ink-x) * -1) var(--ink-x) 0 #000,
+    var(--ink-x) calc(var(--ink-x) * -1) 0 #000,
+    calc(var(--ink-x) * -1) calc(var(--ink-x) * -1) 0 #000;
+}
