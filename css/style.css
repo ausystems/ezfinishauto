@@ -1476,7 +1476,7 @@ body { font-weight: 460; }
   position: relative;
   z-index: 2;
   padding: clamp(28px, 2.6vw, 44px);
-  padding-bottom: 50%;
+  padding-bottom: calc(36% + 40px);
 }
 .card-name {
   color: #0b0e17;
@@ -1515,18 +1515,22 @@ body { font-weight: 460; }
 .card-cta .cta-label { font-size: 11px; letter-spacing: 0.16em; }
 .card-cta svg { width: 16px; height: 16px; }
 
-/* the vehicle rides the bottom corner, cropped by the panel edge */
+/* the whole vehicle sits inside the panel, inset from every edge and
+   centred on the base line, so nothing is ever cropped at any width */
 .card-shot {
   position: absolute;
-  right: -9%;
-  bottom: -3%;
-  width: 116%;
+  left: 11%;
+  right: 11%;
+  bottom: clamp(20px, 2.2vw, 34px);
+  width: auto;
   margin: 0;
   overflow: visible;
   pointer-events: none;
   z-index: 1;
 }
-.card-shot img { transform-origin: 88% 100%; }
+/* the existing hover zoom now grows from the base line, keeping the
+   vehicle inside the panel at full scale */
+.card-shot img { transform-origin: 50% 100%; }
 
 /* the interior photo band: imagery kept, water light plays over it,
    the service line floats in a glass chip */
