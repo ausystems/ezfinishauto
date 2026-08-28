@@ -1953,3 +1953,82 @@ html.menu-open { overflow: hidden; }
   transition: color 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
 }
 .footer-phone .fp-actions a:hover { color: var(--light); box-shadow: inset 0 -1px 0 var(--light); }
+
+/* ============================================================
+   BOOKING FORM · glass card
+   The form reads as one prominent object: a bordered glass
+   panel over the dark ground, roomier type, brighter labels,
+   and a clear required/optional hierarchy.
+   ============================================================ */
+
+.cpage .qform,
+.cpage .qdone {
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 22px;
+  padding: clamp(26px, 2.8vw, 46px);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03) 55%, rgba(255, 255, 255, 0.05));
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  backdrop-filter: blur(18px) saturate(1.2);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 30px 70px rgba(0, 0, 0, 0.4);
+}
+.cpage .qform { gap: clamp(20px, 2.6vh, 30px); }
+
+.qhead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: clamp(14px, 1.8vh, 20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+.qhead-title {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(15px, 1.25vw, 19px);
+  letter-spacing: 0.14em;
+  color: var(--light);
+}
+.qhead-hint {
+  font-family: var(--display);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: #9aa0ab;
+}
+
+/* roomier, brighter fields inside the card */
+.cpage .field { gap: 9px; }
+.cpage .field label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: #d7dbe2;
+}
+.cpage .field label .lab-opt {
+  margin-left: 8px;
+  font-size: 9.5px;
+  letter-spacing: 0.2em;
+  color: #8a8f99;
+}
+.cpage .field :is(input, select, textarea) {
+  font-size: 17px;
+  min-height: 56px;
+  border-bottom-color: rgba(242, 244, 248, 0.34);
+}
+.cpage .field textarea { min-height: 108px; }
+.cpage .q-note { font-size: 13px; }
+
+.q-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: stretch;
+}
+
+@media (max-width: 760px) {
+  .cpage .qform,
+  .cpage .qdone { border-radius: 18px; padding: clamp(22px, 5.5vw, 30px); }
+}

@@ -16,11 +16,13 @@
   const done = $("#qdone");
   if (!form || !done) return;
 
-  const required = {
-    name: { input: $("#q-name"), wrap: $("#fw-name") },
-    message: { input: $("#q-message"), wrap: $("#fw-message") },
-  };
-  const email = { input: $("#q-email"), wrap: $("#fw-email") };
+  // every field is required except the message box
+  const required = ["name", "phone", "email", "city", "vehicle", "model"].map((key) => ({
+    key,
+    input: $("#q-" + key),
+    wrap: $("#fw-" + key),
+  }));
+  const email = required.find((f) => f.key === "email");
 
   function setError(f, on) {
     f.wrap.classList.toggle("has-err", on);
@@ -28,23 +30,23 @@
   }
 
   ["input", "change"].forEach((ev) => {
-    Object.values(required).forEach((f) =>
+    required.forEach((f) =>
       f.input.addEventListener(ev, () => setError(f, false)));
-    email.input.addEventListener(ev, () => setError(email, false));
   });
 
   function composeMessage() {
-    const name = $("#q-name").value.trim();
-    const phone = $("#q-phone").value.trim();
-    const mail = $("#q-email").value.trim();
-    const message = $("#q-message").value.trim();
+    const v = (id) => $("#q-" + id).value.trim();
     const lines = [
       CFG.smsGreeting || "Hi EZ Finish Auto! I'd like to book a mobile detail.",
-      `Name: ${name}`,
+      `Name: ${v("name")}`,
+      `Phone: ${v("phone")}`,
+      `Email: ${v("email")}`,
+      `Vehicle: ${$("#q-vehicle").value}`,
+      `Make and model: ${v("model")}`,
+      `City: ${v("city")}`,
     ];
-    if (phone) lines.push(`Phone: ${phone}`);
-    if (mail) lines.push(`Email: ${mail}`);
-    lines.push(`Message: ${message}`);
+    const message = v("message");
+    if (message) lines.push(`Message: ${message}`);
     return lines.join("\n");
   }
 
@@ -76,15 +78,12 @@
     if ($("#q-company").value) return;
 
     let firstBad = null;
-    Object.values(required).forEach((f) => {
-      const bad = !f.input.value || !f.input.value.trim();
+    required.forEach((f) => {
+      let bad = !f.input.value || !f.input.value.trim();
+      if (!bad && f.key === "email" && !f.input.validity.valid) bad = true;
       setError(f, bad);
       if (bad && !firstBad) firstBad = f.input;
     });
-    if (email.input.value.trim() && !email.input.validity.valid) {
-      setError(email, true);
-      if (!firstBad) firstBad = email.input;
-    }
     if (firstBad) { firstBad.focus(); return; }
 
     const msg = composeMessage();

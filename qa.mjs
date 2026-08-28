@@ -197,7 +197,7 @@ console.log("\n== contact form flow ==");
   });
   ok(hiddenOk, "success panel is visually hidden by default");
 
-  // empty submit → validation errors, form stays
+  // empty submit → all six required fields flag, form stays
   await page.click(".q-submit");
   const errState = await page.evaluate(() => ({
     errs: document.querySelectorAll(".field.has-err").length,
@@ -205,7 +205,7 @@ console.log("\n== contact form flow ==");
     doneHidden: getComputedStyle(document.getElementById("qdone")).display === "none",
     focused: document.activeElement?.id,
   }));
-  ok(errState.errs === 2 && errState.invalid === 2, `empty submit shows both required errors (${errState.errs})`);
+  ok(errState.errs === 6 && errState.invalid === 6, `empty submit flags all six required fields (${errState.errs})`);
   ok(errState.doneHidden, "empty submit does not advance");
   ok(errState.focused === "q-name", "focus moves to the first error");
 
@@ -215,8 +215,11 @@ console.log("\n== contact form flow ==");
   ok(cleared === 0, "error clears while typing");
 
   // a malformed email is caught before composing
-  await page.fill("#q-message", "Pet hair in the trunk please");
+  await page.fill("#q-phone", "647 555 0123");
   await page.fill("#q-email", "not-an-email");
+  await page.fill("#q-city", "Mississauga");
+  await page.selectOption("#q-vehicle", "SUV");
+  await page.fill("#q-model", "Honda CR-V 2023");
   await page.click(".q-submit");
   const badEmail = await page.evaluate(() => ({
     err: document.querySelectorAll("#fw-email.has-err").length,
@@ -224,9 +227,8 @@ console.log("\n== contact form flow ==");
   }));
   ok(badEmail.err === 1 && badEmail.doneHidden, "invalid email blocks the submit");
 
-  // valid submit → prepared message with every field
+  // valid submit → prepared message with every field (message left empty: optional)
   await page.fill("#q-email", "jordan@example.com");
-  await page.fill("#q-phone", "647 555 0123");
   await page.click(".q-submit");
   await page.waitForTimeout(400);
   const doneState = await page.evaluate(() => ({
@@ -239,7 +241,8 @@ console.log("\n== contact form flow ==");
     note: document.getElementById("qdoneNote").textContent,
   }));
   ok(doneState.formHidden && doneState.doneShown, "valid submit shows the prepared message");
-  ok(doneState.msg.includes("Jordan") && doneState.msg.includes("647 555 0123") && doneState.msg.includes("jordan@example.com") && doneState.msg.includes("Pet hair"), "message contains every field");
+  ok(["Jordan", "647 555 0123", "jordan@example.com", "SUV", "Honda CR-V 2023", "Mississauga"].every((v) => doneState.msg.includes(v)), "message contains every field");
+  ok(!doneState.msg.includes("Message:"), "empty optional message stays out of the text");
   ok(doneState.igHref.includes("ig.me/m/ezfinishauto"), "Instagram handoff link correct");
   ok(doneState.smsShown && doneState.smsHref.startsWith("sms:+16474244813"), "text handoff opens the business number");
   ok(doneState.note.length > 0, "clipboard status note shown");
@@ -249,8 +252,17 @@ console.log("\n== contact form flow ==");
   const back = await page.evaluate(() => ({
     formShown: !document.getElementById("qform").hidden,
     name: document.getElementById("q-name").value,
+    model: document.getElementById("q-model").value,
   }));
-  ok(back.formShown && back.name === "Jordan", "edit returns to the filled form");
+  ok(back.formShown && back.name === "Jordan" && back.model === "Honda CR-V 2023", "edit returns to the filled form");
+
+  // the optional message rides along when present
+  await page.fill("#q-message", "Parked in my driveway");
+  await page.click(".q-submit");
+  await page.waitForTimeout(300);
+  const withMsg = await page.evaluate(() => document.getElementById("qdoneMsg").textContent);
+  ok(withMsg.includes("Message: Parked in my driveway"), "optional message included when filled");
+  await page.click("#qEdit");
 
   // honeypot: bot fill → no advance
   await page.evaluate(() => { document.getElementById("q-company").value = "spam co"; });
