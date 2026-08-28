@@ -45,3 +45,48 @@
   const onChange = () => { if (mq.matches && open) setOpen(false); };
   if (mq.addEventListener) mq.addEventListener("change", onChange);
 })();
+
+/* ============================================================
+   Nav light-flip for the subpages.
+   The homepage flips the bar to its light glass state with
+   ScrollTrigger as it crosses light sections; the contact and
+   404 pages have no GSAP, so the same rule runs here with a
+   plain scroll listener: the bar goes light while the 88px
+   line sits inside the page's light band (below the dark hero,
+   above the dark footer). The hero page skips this block.
+   ============================================================ */
+
+(() => {
+  "use strict";
+  if (document.querySelector(".seq")) return; // homepage: main.js owns the flip
+
+  const nav = document.getElementById("nav");
+  const footer = document.querySelector(".footer");
+  if (!nav || !footer) return;
+  const hero = document.querySelector(".chero"); // dark split hero (contact); absent on 404
+
+  let lightStart = 0;
+  let lightEnd = Infinity;
+
+  function measure() {
+    const y = window.scrollY;
+    lightStart = hero ? hero.getBoundingClientRect().bottom + y : 0;
+    lightEnd = footer.getBoundingClientRect().top + y;
+    apply();
+  }
+
+  function apply() {
+    const line = window.scrollY + 88;
+    nav.classList.toggle("on-light", line >= lightStart && line < lightEnd);
+  }
+
+  let ticking = false;
+  window.addEventListener("scroll", () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => { ticking = false; apply(); });
+  }, { passive: true });
+  window.addEventListener("resize", () => setTimeout(measure, 150));
+  window.addEventListener("load", measure);
+  measure();
+})();
