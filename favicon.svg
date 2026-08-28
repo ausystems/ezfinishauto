@@ -1,1 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="#0b0b0c"/><text x="32" y="44" font-family="Futura, Helvetica, Arial, sans-serif" font-size="30" font-weight="800" text-anchor="middle" fill="#ffffff">EZ</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 -10 220 220" fill-rule="evenodd">
+  <style>
+    path { fill: #0b0e17; }
+    @media (prefers-color-scheme: dark) { path { fill: #ffffff; } }
+  </style>
+  <path d="M100 0a100 100 0 1 1 0 200 100 100 0 0 1 0-200Zm0 25a75 75 0 1 0 0 150 75 75 0 0 0 0-150Z"/>
+  <path d="M46 58h108v23H46Zm75 0h33L79 142H46ZM46 119h108v23H46Z"/>
+</svg>
