@@ -2200,6 +2200,7 @@ html.menu-open { overflow: hidden; }
 .services-title em,
 .book-title em,
 .page-title em,
+.faq-title em,
 .nf-code em,
 .pname {
   --ink-r: clamp(1.2px, 0.024em, 5px);
@@ -2213,4 +2214,74 @@ html.menu-open { overflow: hidden; }
     calc(var(--ink-x) * -1) var(--ink-x) 0 #000,
     var(--ink-x) calc(var(--ink-x) * -1) 0 #000,
     calc(var(--ink-x) * -1) calc(var(--ink-x) * -1) 0 #000;
+}
+
+
+/* ============================================================
+   FAQ · the last thing before the footer
+   Two columns of open questions, nothing folded away: the answer
+   people came for is on the page, at reading size, on both the
+   home page and the contact page.
+   ------------------------------------------------------------ */
+
+.faq { background: var(--paper); }
+.faq-head { max-width: 68ch; }
+.faq-title {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(38px, 5.4vw, 104px);
+  line-height: 0.92;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+  color: #0b0e17;
+}
+.faq-title em { font-style: normal; color: #8c8e95; }
+.faq-lead {
+  margin-top: clamp(14px, 1.6vw, 22px);
+  max-width: 56ch;
+  font-size: clamp(16px, 1.2vw, 20px);
+  line-height: 1.5;
+  color: #55565c;
+}
+.faq-grid {
+  margin-top: clamp(34px, 5vh, 64px);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(28px, 3vw, 52px) clamp(40px, 5vw, 96px);
+}
+.faq-item {
+  display: grid;
+  gap: clamp(8px, 0.9vw, 12px);
+  padding-top: clamp(18px, 1.9vw, 26px);
+  border-top: 1px solid var(--line-l);
+}
+.faq-n {
+  font-family: var(--display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  color: #9a9ba1;
+}
+.faq-q {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(21px, 1.94vw, 33px);
+  line-height: 1.16;
+  letter-spacing: -0.012em;
+  color: #0b0e17;
+}
+.faq-a {
+  max-width: 60ch;
+  font-size: clamp(17px, 1.32vw, 21px);
+  line-height: 1.6;
+  color: #43444b;
+}
+@media (max-width: 900px) {
+  .faq-grid { grid-template-columns: 1fr; gap: clamp(24px, 4vw, 34px); }
+}
+@media (max-width: 760px) {
+  .faq-title { font-size: clamp(34px, 9.4vw, 62px); }
+  .faq-lead { font-size: clamp(15.5px, 4.1vw, 18px); }
+  .faq-q { font-size: clamp(20px, 5.4vw, 26px); }
+  .faq-a { font-size: clamp(16.5px, 4.5vw, 19px); line-height: 1.56; }
 }
