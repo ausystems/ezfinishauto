@@ -9,7 +9,7 @@ Mobile car detailing serving all cities across the Greater Toronto Area, Ontario
 | URL | File | Purpose |
 | --- | --- | --- |
 | `/` | `index.html` | Home, hero wash experience, packages & pricing, booking section, service-area map |
-| `/contact` | `contact.html` | Booking / contact, direct channels + a booking-request composer form |
+| `/contact` | `contact.html` | Booking / contact, direct channels + a booking form that sends by text |
 | anything else | `404.html` | Custom 404 (served with a real 404 status) |
 
 ## Run locally
@@ -62,7 +62,7 @@ css/style.css                               one design system for all pages
 js/config.js                                contact paths & phone number (single source)
 js/main.js                                  home: wash scrub, camera, map, reveals
 js/nav.js                                   hamburger menu (all pages)
-js/contact.js                               contact: form validation + message composer
+js/contact.js                               contact: form validation + send-by-text handoff
 assets/seq[-sm]/                            96 wash frames (desktop / ≤700px)
 assets/fonts/sora-var.woff2 + dmsans-var    Sora (display) + DM Sans (body)
 assets/vendor/                              gsap, ScrollTrigger
@@ -86,4 +86,5 @@ npm run qa       # site-wide: routes, links, CTAs, metadata, schema, headers, fo
 
 - The wash frames stream on a priority ladder (first/last, then strides 8/4/2/1) and blend between the nearest loaded neighbours, so scrubbing is continuous while loading.
 - Reduced motion gets a fully static layout: the finished car as a still, the three hero cards stacked in flow, no pin.
-- The booking form is a **message composer** by design: it validates, writes the booking request, copies it, and hands off to Instagram DMs or the messages app. Nothing is sent or stored server-side, so there is no backend to break and nothing to maintain.
+- The booking form **sends by text**: it validates, writes the booking request, and opens the visitor's messaging app with that request addressed to the business number (`sms:` with `&body=` on iOS, `?body=` elsewhere, see `smsHref` in `js/config.js`). Desktops, which rarely have a messaging app wired to `sms:` links, get the request copied to the clipboard with the number to text instead. Nothing is sent or stored server-side, so there is no backend to break and nothing to maintain.
+- Touch devices run GSAP's `normalizeScroll`, so the pinned hero and pricing stage are driven by the same scroll value the browser paints; the wash canvas is capped at the source frame width, draws the nearest frame once the sequence has loaded, and the pins are shorter than on desktop. Snapping happens only inside the card transitions, never on a held card.

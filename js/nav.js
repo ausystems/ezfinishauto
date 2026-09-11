@@ -21,6 +21,7 @@
     toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
     toggle.classList.toggle("is-open", open);
     document.documentElement.classList.toggle("menu-open", open);
+    document.dispatchEvent(new CustomEvent("ez:menu", { detail: { open } }));
     if (open) {
       const first = menu.querySelector("a");
       if (first) first.focus();

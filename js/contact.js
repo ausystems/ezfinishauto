@@ -1,9 +1,12 @@
 /* ============================================================
    EZ FINISH AUTO · contact page
-   The booking form is a message composer: it validates, writes
-   the booking request, copies it, and hands off to a text to
-   the business number or an Instagram DM. Nothing is sent or
-   stored by the site.
+   The booking form sends by text: it validates, writes the
+   booking request, and opens the visitor's messaging app with
+   that request already addressed to the business number. The
+   written request stays on screen with a button to reopen
+   Messages, an Instagram alternative, and a copy fallback for
+   desktops without a messaging app. Nothing is stored by the
+   site.
    ============================================================ */
 
 (() => {
@@ -22,7 +25,6 @@
     input: $("#q-" + key),
     wrap: $("#fw-" + key),
   }));
-  const email = required.find((f) => f.key === "email");
 
   function setError(f, on) {
     f.wrap.classList.toggle("has-err", on);
@@ -37,7 +39,7 @@
   function composeMessage() {
     const v = (id) => $("#q-" + id).value.trim();
     const lines = [
-      CFG.smsGreeting || "Hi EZ Finish Auto! I'd like to book a mobile detail.",
+      "Hi EZ Finish Auto! I'd like to book a mobile detail.",
       `Name: ${v("name")}`,
       `Phone: ${v("phone")}`,
       `Email: ${v("email")}`,
@@ -70,6 +72,10 @@
   }
 
   const note = $("#qdoneNote");
+  const smsBtn = $("#qSms");
+  // desktops rarely have a messaging app wired to sms: links, so they get
+  // the request copied instead of a link that does nothing
+  const handheld = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) || navigator.maxTouchPoints > 1;
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -90,16 +96,21 @@
     $("#qdoneMsg").textContent = msg;
 
     const sms = typeof CFG.smsHref === "function" ? CFG.smsHref(msg) : "";
-    const smsBtn = $("#qSms");
-    if (sms) { smsBtn.href = sms; smsBtn.hidden = false; }
+    if (sms) smsBtn.href = sms;
 
     form.hidden = true;
     done.hidden = false;
 
-    const copied = await copyText(msg);
-    note.textContent = copied
-      ? "Copied to your clipboard. Send it as a text, or paste it in our Instagram DMs."
-      : "Select the message above to copy it, then send it as a text or an Instagram DM.";
+    if (sms && handheld) {
+      // the actual send: hand the written request to the messaging app
+      note.textContent = "Your messaging app is opening with the request addressed to us. Tap send there. If it did not open, use the button above.";
+      window.location.href = sms;
+    } else {
+      const copied = await copyText(msg);
+      note.textContent = copied
+        ? "Copied to your clipboard. Text it to +1 647-424-4813 from your phone, or send it on Instagram."
+        : "Select the message above to copy it, then text it to +1 647-424-4813 or send it on Instagram.";
+    }
 
     $("#qdoneTitle").focus();
   });

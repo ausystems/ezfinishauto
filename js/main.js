@@ -15,10 +15,23 @@
   const CFG = window.EZ_CONFIG || {};
 
   gsap.registerPlugin(ScrollTrigger);
-  gsap.ticker.lagSmoothing(0);
   // mobile browsers fire resize when the address bar slides away; the
   // pin must not be recalculated in the middle of a scroll
   ScrollTrigger.config({ ignoreMobileResize: true });
+
+  /* On phones and tablets the browser scrolls on its own thread while the
+     pinned hero is repositioned from JavaScript, and the two drift apart:
+     that drift is the stutter and the jumps. Normalising scroll moves the
+     scrolling itself onto the JavaScript thread, so the film, the pinned
+     cards and the page always move as one. Desktop keeps native scroll. */
+  const touch = ScrollTrigger.isTouch === 1;
+  if (touch) ScrollTrigger.normalizeScroll({ allowNestedScroll: true });
+
+  // the open menu locks the page; hand scrolling back to the browser so
+  // a drag on the menu cannot move the document underneath it
+  document.addEventListener("ez:menu", (e) => {
+    if (touch) ScrollTrigger.normalizeScroll(!(e.detail && e.detail.open) && { allowNestedScroll: true });
+  });
 
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const finePointer = window.matchMedia("(pointer: fine)").matches;
@@ -115,17 +128,24 @@
   const cam = { pfx: 0, pfy: 0, tfx: 0, tfy: 0 };
 
   let fitMode = false;
+  let lastDrawn = -1;
 
   function sizeCanvas() {
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
     cw = dom.canvas.clientWidth || dom.seq.clientWidth;
     ch = dom.canvas.clientHeight || dom.seq.clientHeight;
+    // The frames are 640px wide on phones and 1280px on larger screens, so
+    // painting more device pixels than that only costs GPU time without
+    // adding detail. Cap the backing store at the source resolution: a
+    // phone at 2.6x goes from 1.9M pixels per frame to under 700K.
+    const srcW = small ? 640 : FW;
+    dpr = Math.max(1, Math.min(window.devicePixelRatio || 1, 2, srcW / Math.max(1, cw)));
     dom.canvas.width = Math.round(cw * dpr);
     dom.canvas.height = Math.round(ch * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.imageSmoothingEnabled = true;
-    ctx.imageSmoothingQuality = "high";
+    ctx.imageSmoothingQuality = touch ? "medium" : "high";
     ctx.fillStyle = BG; // resizing the canvas resets context state
+    lastDrawn = -1;
     // matches the CSS orientation query exactly, so the card layout
     // and the camera band always agree on which script to run
     portrait = ch >= cw;
@@ -182,12 +202,27 @@
 
   function draw() {
     if (!cw || !ch) return;
-    ctx.globalAlpha = 1;
-    ctx.fillRect(0, 0, cw, ch);
-    const pair = nearestPair(gsap.utils.clamp(0, FRAME_COUNT - 1, state.vf));
+    const vf = gsap.utils.clamp(0, FRAME_COUNT - 1, state.vf);
+    const pair = nearestPair(vf);
     if (!pair) return;
-    coverDraw(frames[pair.a], state.introA);
-    if (pair.b && pair.t > 0) coverDraw(frames[pair.b], state.introA * pair.t);
+    if (pair.b && pair.b - pair.a === 1) {
+      // both neighbours are decoded: show the nearer real frame. Film frames
+      // step cleanly; blending two of them only ghosts the moving water and
+      // doubles the paint cost
+      const idx = vf - pair.a < 0.5 ? pair.a : pair.b;
+      const key = idx * 1000 + Math.round((state.fx + cam.pfx) * 400) + Math.round(state.zoom * 200) + Math.round(state.bandY * 100);
+      if (key === lastDrawn) return;   // nothing changed since the last paint
+      lastDrawn = key;
+      ctx.globalAlpha = 1;
+      ctx.fillRect(0, 0, cw, ch);
+      coverDraw(frames[idx], state.introA);
+    } else {
+      lastDrawn = -1;
+      ctx.globalAlpha = 1;
+      ctx.fillRect(0, 0, cw, ch);
+      coverDraw(frames[pair.a], state.introA);
+      if (pair.b && pair.t > 0) coverDraw(frames[pair.b], state.introA * pair.t);
+    }
     ctx.globalAlpha = 1;
   }
 
@@ -251,17 +286,40 @@
      u9.3. Poster phrases land as the wash progresses; the film
      contracts into a framed print as the water shuts off.
   ------------------------------------------------------------ */
+  // timeline windows (in timeline seconds) where a card is mid-transition;
+  // resting inside one would leave a half-drawn card, so the snap below
+  // carries the page to whichever edge lies ahead in the scroll direction
+  const TRANSITIONS = [[1.15, 1.8], [2.85, 3.55], [5.5, 6.1], [6.45, 7.15]];
+
   function buildScrub() {
     const FT = { immediateRender: false };
-    const tl = gsap.timeline({
+    let tl;
+    tl = gsap.timeline({
       defaults: { ease: "none" },
       scrollTrigger: {
         trigger: dom.seq,
         start: "top top",
-        end: "+=520%",
-        scrub: 1,
+        // a phone gets through the wash in fewer swipes
+        end: touch ? "+=380%" : "+=520%",
+        scrub: touch ? 0.9 : 1,
         pin: true,
-        anticipatePin: 1,
+        anticipatePin: touch ? 0 : 1,
+        snap: {
+          snapTo: (value, self) => {
+            const D = tl.duration();
+            for (const [a, b] of TRANSITIONS) {
+              const za = a / D, zb = b / D;
+              if (value > za && value < zb) return self && self.direction < 0 ? za : zb;
+            }
+            return value;   // a held card or the bare film is a clean place to rest
+          },
+          duration: { min: 0.25, max: 0.65 },
+          delay: 0.06,
+          ease: "power2.out",
+          // decide from where the scroll actually stopped, not from a
+          // velocity projection: touch momentum is already spent by then
+          inertia: false,
+        },
         onUpdate: (self) => gsap.set(dom.progressFill, { scaleX: self.progress }),
       },
     });
@@ -341,10 +399,10 @@
       scrollTrigger: {
         trigger: stage,
         start: "top top",
-        end: "+=220%",
-        scrub: 1,
+        end: touch ? "+=170%" : "+=220%",
+        scrub: touch ? 0.9 : 1,
         pin: true,
-        anticipatePin: 1,
+        anticipatePin: touch ? 0 : 1,
       },
     });
     const shows = [
@@ -565,7 +623,14 @@
       const target = id === "#top" ? document.body : $(id);
       if (!target) return;
       e.preventDefault();
-      target.scrollIntoView({ behavior: reduced ? "auto" : "smooth" });
+      const y = id === "#top" ? 0 : target.getBoundingClientRect().top + window.scrollY;
+      if (reduced) { window.scrollTo(0, y); return; }
+      const pos = { y: window.scrollY };
+      const dist = Math.abs(y - pos.y);
+      gsap.to(pos, {
+        y, duration: gsap.utils.clamp(0.5, 1.4, dist / 1800), ease: "power3.inOut",
+        onUpdate: () => window.scrollTo(0, pos.y),
+      });
     });
   });
 

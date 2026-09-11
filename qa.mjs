@@ -243,7 +243,7 @@ console.log("\n== contact form flow ==");
   ok(doneState.formHidden && doneState.doneShown, "valid submit shows the prepared message");
   ok(["Jordan", "647 555 0123", "jordan@example.com", "SUV", "Honda CR-V 2023", "Mississauga"].every((v) => doneState.msg.includes(v)), "message contains every field");
   ok(!doneState.msg.includes("Message:"), "empty optional message stays out of the text");
-  ok(doneState.igHref.includes("ig.me/m/ezfinishauto"), "Instagram handoff link correct");
+  ok(doneState.igHref.includes("instagram.com/ezfinishauto"), "Instagram handoff link is the profile page");
   ok(doneState.smsShown && doneState.smsHref.startsWith("sms:+16474244813"), "text handoff opens the business number");
   ok(doneState.note.length > 0, "clipboard status note shown");
 

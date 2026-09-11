@@ -15,8 +15,11 @@ window.EZ_CONFIG = {
   smsGreeting: "Hi EZ Finish Auto! I'd like to book a mobile detail.",
 
   /* Contact destinations. */
-  instagram: "https://www.instagram.com/ezfinishauto",
-  instagramDm: "https://ig.me/m/ezfinishauto",
+  instagram: "https://www.instagram.com/ezfinishauto/",
+  /* Direct-message deep links (ig.me) need the app or a login and fail
+     silently for many visitors, so messaging also goes through the
+     profile page, where the Message button always works. */
+  instagramDm: "https://www.instagram.com/ezfinishauto/",
   tiktok: "https://www.tiktok.com/@ez.finishauto",
   contactPage: "/contact",
 };
